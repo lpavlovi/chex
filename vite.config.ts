@@ -1,14 +1,26 @@
+// vite.config.ts
 import { defineConfig } from "vite";
-import solidPlugin from "vite-plugin-solid";
+import solid from "vite-plugin-solid";
+import { resolve } from "path";
 
-const devBuild = process.env.NODE_ENV !== "development";
+const devBuild = process.env.NODE_ENV === "development";
+
 export default defineConfig({
-	plugins: [solidPlugin()],
-	server: {
-		port: 3000,
-	},
+	plugins: [solid()],
 	build: {
-		target: "esnext",
 		sourcemap: devBuild,
+		rollupOptions: {
+			// Define the entry points for your extension
+			input: {
+				popup: resolve(__dirname, "index.html"),
+				// content: resolve(__dirname, "src/content_script.ts"), // Assuming this is the path
+			},
+			output: {
+				// Ensure files have a static name and are placed in the root of dist
+				entryFileNames: "[name].js",
+				chunkFileNames: "[name].js",
+				assetFileNames: "[name].[ext]",
+			},
+		},
 	},
 });
