@@ -12,7 +12,7 @@ const App: Component = () => {
         setError(chrome.runtime.lastError?.message || "Auth failed");
         return;
       }
-      setToken(authToken);
+      setToken(String(authToken));
       setError(''); // Clear previous errors
     });
   };

@@ -13,7 +13,7 @@ export default defineConfig({
 			// Define the entry points for your extension
 			input: {
 				popup: resolve(__dirname, "index.html"),
-				// content: resolve(__dirname, "src/content_script.ts"), // Assuming this is the path
+				content: resolve(__dirname, "src/content_script.tsx"),
 			},
 			output: {
 				// Ensure files have a static name and are placed in the root of dist
