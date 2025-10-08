@@ -16,11 +16,15 @@
 		"@types/node": "^24.3.1",
 		"typescript": "^5.7.2",
 		"vite": "^6.0.0",
-		"vite-plugin-solid": "^2.11.6"
+		"vite-plugin-css-injected-by-js": "^3.5.2",
+		"vite-plugin-solid": "^2.11.6",
+		"vite-plugin-zip-pack": "^1.2.4"
 	},
 	"dependencies": {
 		"@google/genai": "^1.19.0",
 		"dotenv": "^17.2.2",
-		"solid-js": "^1.9.5"
+		"goober": "^2.1.18",
+		"solid-js": "^1.9.5",
+		"solid-styled-components": "^0.28.5"
 	}
 }

@@ -3,7 +3,7 @@ import { defineManifest } from "@crxjs/vite-plugin";
 export default defineManifest({
 	manifest_version: 3,
 	name: "Hello Extensions",
-	version: "1.0",
+	version: "0.1",
 	icons: {
 		48: "public/hello_extensions.png",
 	},
@@ -11,7 +11,7 @@ export default defineManifest({
 		default_icon: {
 			48: "public/hello_extensions.png",
 		},
-		default_popup: "src/popup/index.html",
+		default_popup: "index.html",
 	},
 	content_scripts: [
 		{
@@ -19,8 +19,5 @@ export default defineManifest({
 			matches: ["https://*/*"],
 		},
 	],
-	permissions: ["sidePanel", "contentSettings"],
-	side_panel: {
-		default_path: "src/sidepanel/index.html",
-	},
+	permissions: ["activeTab", "contentSettings"],
 });

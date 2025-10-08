@@ -1,26 +1,25 @@
-// vite.config.ts
 import { defineConfig } from "vite";
 import solid from "vite-plugin-solid";
-import { resolve } from "path";
+import { crx } from "@crxjs/vite-plugin";
+import zip from "vite-plugin-zip-pack";
+import manifest from "./manifest.config";
 
 const devBuild = process.env.NODE_ENV === "development";
+const name = "chex";
+const version = "0.1";
 
 export default defineConfig({
-	plugins: [solid()],
+	plugins: [
+		solid(),
+		crx({ manifest }),
+		zip({ outDir: "release", outFileName: `crx-${name}-${version}.zip` }),
+	],
 	build: {
 		sourcemap: devBuild,
-		rollupOptions: {
-			// Define the entry points for your extension
-			input: {
-				popup: resolve(__dirname, "index.html"),
-				content: resolve(__dirname, "src/content_script.tsx"),
-			},
-			output: {
-				// Ensure files have a static name and are placed in the root of dist
-				entryFileNames: "[name].js",
-				chunkFileNames: "[name].js",
-				assetFileNames: "[name].[ext]",
-			},
+	},
+	server: {
+		cors: {
+			origin: [/chrome-extension:\/\//],
 		},
 	},
 });
