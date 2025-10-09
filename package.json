@@ -22,6 +22,7 @@
 	},
 	"dependencies": {
 		"@google/genai": "^1.19.0",
+		"clsx": "^2.1.1",
 		"dotenv": "^17.2.2",
 		"goober": "^2.1.18",
 		"solid-js": "^1.9.5",

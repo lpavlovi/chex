@@ -1,7 +1,7 @@
 import { createComponent } from "solid-js";
 import { render } from "solid-js/web";
 import { App } from "./App";
-import { extractCss } from "goober";
+import { extractCss } from "solid-styled-components";
 
 /**
  * Mount the Solid app to the DOM.
@@ -23,7 +23,7 @@ function mountApp() {
 
 	render(() => createComponent(App, {}), shadow);
 
-	// extractCss function takes the _global_ styled components to build a CSS string
+	// extractCss function takes the styled components to build a CSS string
 	// so this needs to be called after the render
 	style.textContent = extractCss();
 }
