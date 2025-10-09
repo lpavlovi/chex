@@ -19,13 +19,25 @@ function mountApp() {
 
 	// Inject bundled CSS into shadow
 	const style = document.createElement("style");
+	style.setAttribute("data-styled-components", "");
 	shadow.appendChild(style);
 
-	render(() => createComponent(App, {}), shadow);
+	// Initial render
+	render(() => createComponent(App, {}), mount);
 
-	// extractCss function takes the styled components to build a CSS string
-	// so this needs to be called after the render
+	// Initial style extraction
 	style.textContent = extractCss();
+
+	// For development: set up style updates on HMR
+	if (import.meta.hot) {
+		import.meta.hot.accept("./App", () => {
+			// Re-extract and update styles in shadow DOM
+			style.textContent = extractCss();
+		});
+	}
 }
 
-mountApp();
+// Only mount if we're in extension context (not development mode)
+if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) {
+	mountApp();
+}

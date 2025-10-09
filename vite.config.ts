@@ -7,12 +7,13 @@ import manifest from "./manifest.config";
 const devBuild = process.env.NODE_ENV === "development";
 const name = "chex";
 const version = "0.1";
+const isDevMode = process.env.DEV_MODE === "true";
 
 export default defineConfig({
 	plugins: [
-		solid(),
-		crx({ manifest }),
-		zip({ outDir: "release", outFileName: `crx-${name}-${version}.zip` }),
+		solid({ hot: true }),
+		...(isDevMode ? [] : [crx({ manifest })]),
+		...(devBuild ? [] : [zip({ outDir: "release", outFileName: `crx-${name}-${version}.zip` })]),
 	],
 	build: {
 		sourcemap: devBuild,
@@ -21,5 +22,6 @@ export default defineConfig({
 		cors: {
 			origin: [/chrome-extension:\/\//],
 		},
+		port: isDevMode ? 3000 : 5173,
 	},
 });

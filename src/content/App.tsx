@@ -8,6 +8,8 @@ const AppContainer = styled("div")`
   right: 20px;
   width: 50px;
   height: 50px;
+  z-index: 999999;
+  pointer-events: auto;
 `;
 
 const hiddenClass = css`
