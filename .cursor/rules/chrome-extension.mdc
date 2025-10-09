@@ -1,0 +1,14 @@
+---
+alwaysApply: true
+---
+
+This project aims to build a Chrome Extension using Solid JS.
+- All code and configuration should be compatible with Chrome Extension Manifest V3.
+- Use the `@crxjs/vite-plugin` for building and bundling the extension.
+- Place content scripts in the `src/content/` directory.
+- The manifest file should be defined in `manifest.config.ts`.
+- Use Vite for development and building; configure plugins as needed for Chrome Extensions.
+- Follow best practices for permissions: only request those necessary for functionality.
+- Keep popup UI files (e.g., `index.html`) in the root or `public/` directory.
+- Use the `vite-plugin-zip-pack` to package the extension for release.
+- Test the extension in Chrome using developer mode before publishing.
