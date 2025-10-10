@@ -26,7 +26,7 @@ function mountDevApp() {
 
   // Initial render
   render(() => createComponent(App, {}), container);
-  
+
   // Initial style extraction
   updateStyles();
 

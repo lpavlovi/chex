@@ -1,6 +1,6 @@
-import { styled, css } from 'solid-styled-components';
-import { createSignal, onMount, onCleanup, createEffect } from 'solid-js';
-import { clsx } from 'clsx';
+import { styled, css } from "solid-styled-components";
+import { createSignal, onMount, onCleanup, createEffect } from "solid-js";
+import { clsx } from "clsx";
 
 const AppContainer = styled("div")`
   position: fixed;
@@ -28,7 +28,7 @@ const EmblemContainer = styled("div")`
   color: #ffffff;
   text-align: center;
   line-height: 1;
-  box-shadow: 
+  box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.25),
     0 4px 8px rgba(0, 0, 0, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -38,10 +38,10 @@ const EmblemContainer = styled("div")`
   -webkit-backdrop-filter: blur(10px);
 `;
 
-const Emblem = (props: { visible: boolean, isMac: boolean }) => {
+const Emblem = (props: { visible: boolean; isMac: boolean }) => {
   return (
     <EmblemContainer class={clsx(!props.visible && hiddenClass)}>
-      {props.isMac ? '⌘ + K' : 'Ctrl + K'}
+      {props.isMac ? "⌘ + K" : "Ctrl + K"}
     </EmblemContainer>
   );
 };
@@ -60,43 +60,43 @@ export function App() {
     if (isActive()) {
       event.preventDefault();
       event.stopPropagation();
-      
+
       const element = event.target as HTMLElement;
       console.log(element);
-      
+
       setIsActive(false);
     }
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
     const isMacOS = isMac();
-    const isCorrectKey = isMacOS 
-      ? (event.metaKey && event.key === 'k')  // CMD + K on Mac
-      : (event.ctrlKey && event.key === 'k'); // CTRL + K on Windows
-    
+    const isCorrectKey = isMacOS
+      ? event.metaKey && event.key === "k" // CMD + K on Mac
+      : event.ctrlKey && event.key === "k"; // CTRL + K on Windows
+
     if (isCorrectKey) {
       event.preventDefault();
-      setIsActive(prev => !prev);
+      setIsActive((prev) => !prev);
     }
   };
 
   // Effect to manage click listener based on visibility
   createEffect(() => {
     if (isActive()) {
-      document.addEventListener('click', handleClick, true);
+      document.addEventListener("click", handleClick, true);
     } else {
-      document.removeEventListener('click', handleClick, true);
+      document.removeEventListener("click", handleClick, true);
     }
   });
 
   onMount(() => {
     setIsMac(detectMacOS());
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
   });
 
   onCleanup(() => {
-    document.removeEventListener('keydown', handleKeyDown);
-    document.removeEventListener('click', handleClick, true);
+    document.removeEventListener("keydown", handleKeyDown);
+    document.removeEventListener("click", handleClick, true);
   });
 
   return (
