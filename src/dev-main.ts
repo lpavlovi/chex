@@ -42,9 +42,7 @@ function mountDevApp() {
 // Auto-mount when DOM is ready
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", mountDevApp);
-  console.log("DOMContentLoaded");
 } else {
-  console.log("else mountDevApp");
   mountDevApp();
 }
 
@@ -56,5 +54,3 @@ if (import.meta.hot) {
     }
   });
 }
-
-console.log("dev-main.ts has been imported");

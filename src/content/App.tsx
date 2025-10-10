@@ -1,50 +1,19 @@
-import { styled, css } from "solid-styled-components";
-import { createSignal, onMount, onCleanup, createEffect } from "solid-js";
-import { clsx } from "clsx";
+import { styled } from "solid-styled-components";
+import { createSignal, onMount, onCleanup, createEffect, Show } from "solid-js";
+import { Emblem } from "./components/Emblem";
+import { OptionChain } from "./components/OptionChain";
 
 const AppContainer = styled("div")`
   position: fixed;
   top: 20px;
   right: 20px;
-  width: 50px;
-  height: 50px;
   z-index: 9999;
-`;
-
-const hiddenClass = css`
-  visibility: hidden;
-`;
-
-const EmblemContainer = styled("div")`
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-  border-radius: 12px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-  color: #ffffff;
-  text-align: center;
-  line-height: 1;
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.25),
-    0 4px 8px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 20px;
 `;
 
-const Emblem = (props: { visible: boolean; isMac: boolean }) => {
-  return (
-    <EmblemContainer class={clsx(!props.visible && hiddenClass)}>
-      {props.isMac ? "⌘ + K" : "Ctrl + K"}
-    </EmblemContainer>
-  );
-};
 
 const detectMacOS: () => boolean = () => {
   const userAgent = navigator.userAgent.toLowerCase();
@@ -75,6 +44,7 @@ export function App() {
       : event.ctrlKey && event.key === "k"; // CTRL + K on Windows
 
     if (isCorrectKey) {
+      console.log("handleKeyDown correct key");
       event.preventDefault();
       setIsActive((prev) => !prev);
     }
@@ -100,8 +70,11 @@ export function App() {
   });
 
   return (
-    <AppContainer>
-      <Emblem visible={isActive()} isMac={isMac()} />
-    </AppContainer>
+    <Show when={isActive()}>
+      <AppContainer>
+        <Emblem isMac={isMac()} />
+        <OptionChain />
+      </AppContainer>
+    </Show>
   );
 }
