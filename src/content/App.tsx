@@ -1,9 +1,9 @@
-import { styled } from "solid-styled-components";
+import { styled , css} from "solid-styled-components";
 import { createSignal, onMount, onCleanup, createEffect, Show } from "solid-js";
 import { Emblem } from "./components/Emblem";
 import { OptionChain } from "./components/OptionChain";
 
-const AppContainer = styled("div")`
+const appContainerClass = css`
   position: fixed;
   top: 20px;
   right: 20px;
@@ -13,7 +13,6 @@ const AppContainer = styled("div")`
   align-items: flex-end;
   gap: 20px;
 `;
-
 
 const detectMacOS: () => boolean = () => {
   const userAgent = navigator.userAgent.toLowerCase();
@@ -71,10 +70,10 @@ export function App() {
 
   return (
     <Show when={isActive()}>
-      <AppContainer>
+      <div class={appContainerClass}>
         <Emblem isMac={isMac()} />
         <OptionChain />
-      </AppContainer>
+      </div>
     </Show>
   );
 }

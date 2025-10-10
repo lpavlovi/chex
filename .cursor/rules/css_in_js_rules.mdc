@@ -1,0 +1,53 @@
+---
+alwaysApply: true
+---
+
+# CSS-in-JS Rules for SolidJS Chrome Extension
+
+## Primary Rule: Use `css` function for CSS-in-JS
+
+Always use the `css` function from `solid-styled-components` for styling components. This ensures proper CSS extraction and hydration in the Chrome extension environment.
+
+### Example
+
+The pattern to follow:
+
+```tsx
+import { css } from "solid-styled-components";
+
+// 1. Define CSS classes using css template literal
+const componentClass = css`
+  width: 10px;
+`;
+
+// 2. Apply classes using the class prop
+export const Component = (props) => {
+  return <div class={componentClass}>content</div>;
+};
+```
+
+Never do the following:
+```tsx
+const MyStyledComponent = styled("div")`
+  width: 10px;
+`;
+```
+
+### Naming Convention:
+- Use descriptive variable names ending with "Class"
+- Examples: `emblemContainerClass`, `optionButtonClass`, `appContainerClass`
+
+### Benefits:
+- Ensures CSS is properly extracted by `extractCss()`
+- Works correctly with Shadow DOM in Chrome extensions
+- Maintains consistent styling patterns across the project
+- Enables proper hydration of styles
+
+### When NOT to use this pattern:
+- Only avoid `css` when you need truly dynamic styles that change at runtime based on props
+- For dynamic styles, consider using `styled()` function or CSS custom properties
+
+### Migration from other patterns:
+- Convert any inline styles to `css` classes
+- Convert `styled()` components to `css` + `class` prop when possible
+- Ensure all styled components follow this pattern for consistent CSS extraction
