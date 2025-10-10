@@ -13,7 +13,6 @@ function updateStyles() {
 }
 
 function mountDevApp() {
-  // const container = document.getElementById("app");
   const container = document.body;
   if (!container) {
     console.error("App container not found");

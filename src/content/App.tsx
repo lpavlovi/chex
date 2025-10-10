@@ -8,8 +8,7 @@ const AppContainer = styled("div")`
   right: 20px;
   width: 50px;
   height: 50px;
-  z-index: 999999;
-  pointer-events: auto;
+  z-index: 9999;
 `;
 
 const hiddenClass = css`
@@ -19,16 +18,24 @@ const hiddenClass = css`
 const EmblemContainer = styled("div")`
   width: 100%;
   height: 100%;
-  background: transparent;
-  border: 2px solid white;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
-  font-weight: bold;
-  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffffff;
   text-align: center;
   line-height: 1;
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.25),
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 `;
 
 const Emblem = (props: { visible: boolean, isMac: boolean }) => {
@@ -46,37 +53,36 @@ const detectMacOS: () => boolean = () => {
 };
 
 export function App() {
-  const [active, setActive] = createSignal(false);
+  const [isActive, setIsActive] = createSignal(false);
   const [isMac, setIsMac] = createSignal(false);
 
   const handleClick = (event: MouseEvent) => {
-    if (active()) {
+    if (isActive()) {
       event.preventDefault();
       event.stopPropagation();
       
       const element = event.target as HTMLElement;
       console.log(element);
       
-      setActive(false);
+      setIsActive(false);
     }
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
     const isMacOS = isMac();
-    console.log(`isMacOS: ${isMacOS}, event.metaKey: ${event.metaKey}, event.key: ${event.key}`);
     const isCorrectKey = isMacOS 
       ? (event.metaKey && event.key === 'k')  // CMD + K on Mac
       : (event.ctrlKey && event.key === 'k'); // CTRL + K on Windows
     
     if (isCorrectKey) {
       event.preventDefault();
-      setActive(prev => !prev);
+      setIsActive(prev => !prev);
     }
   };
 
-  // Effect to manage click listener based on active state
+  // Effect to manage click listener based on visibility
   createEffect(() => {
-    if (active()) {
+    if (isActive()) {
       document.addEventListener('click', handleClick, true);
     } else {
       document.removeEventListener('click', handleClick, true);
@@ -95,7 +101,7 @@ export function App() {
 
   return (
     <AppContainer>
-      <Emblem visible={active()} isMac={isMac()} />
+      <Emblem visible={isActive()} isMac={isMac()} />
     </AppContainer>
   );
 }
