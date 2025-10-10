@@ -1,8 +1,10 @@
 const OPTIONS = ["Summarize", "Translate", "Speak"];
 
-import { styled } from "solid-styled-components";
+import { css } from "solid-styled-components";
+import { createSignal, Show } from "solid-js";
+import { Motion, Presence } from "solid-motionone";
 
-const Option = styled("div")`
+const optionClass = css`
   width: 100%;
   padding: 12px 6px;
   background: linear-gradient(135deg, #212121 0%, #383838 100%);
@@ -24,30 +26,38 @@ const Option = styled("div")`
   border: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(7px);
   -webkit-backdrop-filter: blur(7px);
-  
-  /* Animation properties */
-  opacity: 0;
-  transform: translateX(20px);
-  animation: slideInFromRight 0.4s ease-out forwards;
-  
-  @keyframes slideInFromRight {
-    from {
-      opacity: 0;
-      transform: translateX(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
 `;
 
+function Option({ index, option, isVisible }: { index: number, option: string, isVisible: () => boolean }) {
+  return (
+    <Presence exitBeforeEnter>
+      <Show when={isVisible()}>
+        <Motion.div
+          class={optionClass}
+          initial={{ opacity: 0, scale: 0.8, x: 20 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          exit={{ opacity: 0, scale: 0.8, x: 20 }}
+          transition={{ 
+            duration: 0.40, // Shorter duration for responsiveness
+            delay: index * 0.15, // Shorter delay between options
+            easing: "ease-out" 
+          }}
+        >
+          {option}
+        </Motion.div>
+      </Show>
+    </Presence>
+  );
+}
 
 export const OptionChain = () => {
+  // Always show options when this component is rendered (controlled by parent)
+  const isShown = () => true;
+
   return (
     <div>
       {OPTIONS.map((option, index) => {
-        return <Option>{option}</Option>;
+        return <Option index={index} option={option} isVisible={isShown} />
       })}
     </div>
   );

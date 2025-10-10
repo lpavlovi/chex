@@ -28,6 +28,7 @@
 		"dotenv": "^17.2.2",
 		"goober": "^2.1.18",
 		"solid-js": "^1.9.5",
+		"solid-motionone": "^1.0.4",
 		"solid-styled-components": "^0.28.5"
 	}
 }
