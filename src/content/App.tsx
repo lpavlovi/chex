@@ -1,4 +1,4 @@
-import { styled , css} from "solid-styled-components";
+import { css } from "solid-styled-components";
 import { createSignal, onMount, onCleanup, createEffect, Show } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
 import { Emblem } from "./components/Emblem";
@@ -25,7 +25,6 @@ export function App() {
   const [isActive, setIsActive] = createSignal(false);
   const [isMac, setIsMac] = createSignal(false);
   const [lastToggleTime, setLastToggleTime] = createSignal(0);
-  const [animationControls, setAnimationControls] = createSignal<any>();
 
   const handleClick = (event: MouseEvent) => {
     if (isActive()) {
@@ -45,25 +44,19 @@ export function App() {
       ? event.metaKey && event.key === "k" // CMD + K on Mac
       : event.ctrlKey && event.key === "k"; // CTRL + K on Windows
 
-    if (isCorrectKey) {
-      console.log("handleKeyDown correct key");
-      event.preventDefault();
-      
-      const now = Date.now();
-      const timeSinceLastToggle = now - lastToggleTime();
-      
-      // If pressed within 100ms of last toggle, stop current animation and toggle immediately
-      if (timeSinceLastToggle < 100) {
-        console.log("Rapid key press detected - interrupting animation");
-        const controls = animationControls();
-        if (controls) {
-          controls.stop(); // Stop current animation
-        }
-      }
-      
-      setIsActive((prev) => !prev);
-      setLastToggleTime(now);
+    if (!isCorrectKey) {
+      return;
     }
+
+    console.log("handleKeyDown correct key");
+    event.preventDefault();
+
+    const now = Date.now();
+    const timeSinceLastToggle = now - lastToggleTime();
+    console.log(`timeSinceLastToggle: ${timeSinceLastToggle} ms`);
+
+    setIsActive((prev) => !prev);
+    setLastToggleTime(now);
   };
 
   // Effect to manage click listener based on visibility
@@ -78,6 +71,12 @@ export function App() {
   onMount(() => {
     setIsMac(detectMacOS());
     document.addEventListener("keydown", handleKeyDown);
+    console.log("[App] - MOUNTED")
+  });
+
+  onCleanup(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    console.log("[App] - CLEANED UP")
   });
 
   onCleanup(() => {
@@ -93,11 +92,10 @@ export function App() {
           initial={{ opacity: 0, scale: 0.8, y: -20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.8, y: -20 }}
-          transition={{ 
-            duration: 0.2, // Shorter duration for more responsive feel
-            easing: "ease-out" 
+          transition={{
+            duration: 0.4, // Shorter duration for more responsive feel
+            easing: "ease-out"
           }}
-          ref={(controls) => setAnimationControls(controls)}
         >
           <Emblem isMac={isMac()} />
           <OptionChain />
