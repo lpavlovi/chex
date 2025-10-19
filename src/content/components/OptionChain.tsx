@@ -20,7 +20,7 @@ const optionClass = css`
   line-height: 1;
   box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.18),
-    0 2px 4px rgba(0, 0, 0, 0.10),
+    0 2px 4px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.07);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.42);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -28,7 +28,15 @@ const optionClass = css`
   -webkit-backdrop-filter: blur(7px);
 `;
 
-function Option({ index, option, isVisible }: { index: number, option: string, isVisible: () => boolean }) {
+function Option({
+  index,
+  option,
+  isVisible,
+}: {
+  index: number;
+  option: string;
+  isVisible: () => boolean;
+}) {
   return (
     <Presence exitBeforeEnter>
       <Show when={isVisible()}>
@@ -37,10 +45,10 @@ function Option({ index, option, isVisible }: { index: number, option: string, i
           initial={{ opacity: 0, scale: 0.8, x: 20 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
           exit={{ opacity: 0, scale: 0.8, x: 20 }}
-          transition={{ 
-            duration: 0.40, // Shorter duration for responsiveness
+          transition={{
+            duration: 0.4, // Shorter duration for responsiveness
             delay: index * 0.15, // Shorter delay between options
-            easing: "ease-out" 
+            easing: "ease-out",
           }}
         >
           {option}
@@ -57,7 +65,7 @@ export const OptionChain = () => {
   return (
     <div>
       {OPTIONS.map((option, index) => {
-        return <Option index={index} option={option} isVisible={isShown} />
+        return <Option index={index} option={option} isVisible={isShown} />;
       })}
     </div>
   );

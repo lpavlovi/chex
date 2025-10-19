@@ -71,12 +71,12 @@ export function App() {
   onMount(() => {
     setIsMac(detectMacOS());
     document.addEventListener("keydown", handleKeyDown);
-    console.log("[App] - MOUNTED")
+    console.log("[App] - MOUNTED");
   });
 
   onCleanup(() => {
     document.addEventListener("keydown", handleKeyDown);
-    console.log("[App] - CLEANED UP")
+    console.log("[App] - CLEANED UP");
   });
 
   onCleanup(() => {
@@ -94,7 +94,7 @@ export function App() {
           exit={{ opacity: 0, scale: 0.8, y: -20 }}
           transition={{
             duration: 0.4, // Shorter duration for more responsive feel
-            easing: "ease-out"
+            easing: "ease-out",
           }}
         >
           <Emblem isMac={isMac()} />

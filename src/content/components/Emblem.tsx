@@ -24,7 +24,7 @@ const emblemContainerClass = css`
 `;
 
 export const Emblem = (props: { isMac: boolean }) => {
-  return <div class={emblemContainerClass}>
-      {props.isMac ? "⌘ + K" : "Ctrl + K"}
-    </div>
+  return (
+    <div class={emblemContainerClass}>{props.isMac ? "⌘ + K" : "Ctrl + K"}</div>
+  );
 };
