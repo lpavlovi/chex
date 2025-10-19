@@ -27,15 +27,17 @@ export function App() {
   const [lastToggleTime, setLastToggleTime] = createSignal(0);
 
   const handleClick = (event: MouseEvent) => {
-    if (isActive()) {
-      event.preventDefault();
-      event.stopPropagation();
+    // TODO: Implement click handler
+    return;
+    // if (isActive()) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
 
-      const element = event.target as HTMLElement;
-      console.log(element);
+    //   const element = event.target as HTMLElement;
+    //   console.log(element);
 
-      setIsActive(false);
-    }
+    //   setIsActive(false);
+    // }
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -48,12 +50,10 @@ export function App() {
       return;
     }
 
-    console.log("handleKeyDown correct key");
     event.preventDefault();
 
     const now = Date.now();
     const timeSinceLastToggle = now - lastToggleTime();
-    console.log(`timeSinceLastToggle: ${timeSinceLastToggle} ms`);
 
     setIsActive((prev) => !prev);
     setLastToggleTime(now);
@@ -71,12 +71,10 @@ export function App() {
   onMount(() => {
     setIsMac(detectMacOS());
     document.addEventListener("keydown", handleKeyDown);
-    console.log("[App] - MOUNTED");
   });
 
   onCleanup(() => {
     document.addEventListener("keydown", handleKeyDown);
-    console.log("[App] - CLEANED UP");
   });
 
   onCleanup(() => {
@@ -93,7 +91,7 @@ export function App() {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.8, y: -20 }}
           transition={{
-            duration: 0.4, // Shorter duration for more responsive feel
+            duration: 0.2,
             easing: "ease-out",
           }}
         >

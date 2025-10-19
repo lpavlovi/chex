@@ -1,10 +1,9 @@
+import { css } from "solid-styled-components";
+import { Motion } from "solid-motionone";
+
 const OPTIONS = ["Summarize", "Translate", "Speak"];
 
-import { css } from "solid-styled-components";
-import { createSignal, Show } from "solid-js";
-import { Motion, Presence } from "solid-motionone";
-
-const optionClass = css`
+const optionButtonClass = css`
   width: 100%;
   padding: 12px 6px;
   background: linear-gradient(135deg, #212121 0%, #383838 100%);
@@ -26,47 +25,59 @@ const optionClass = css`
   border: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(7px);
   -webkit-backdrop-filter: blur(7px);
+  cursor: pointer;
 `;
 
-function Option({
-  index,
-  option,
-  isVisible,
-}: {
-  index: number;
-  option: string;
-  isVisible: () => boolean;
-}) {
+function Option({ index, option, onClick }: { index: number; option: string; onClick?: () => void }) {
   return (
-    <Presence exitBeforeEnter>
-      <Show when={isVisible()}>
-        <Motion.div
-          class={optionClass}
-          initial={{ opacity: 0, scale: 0.8, x: 20 }}
-          animate={{ opacity: 1, scale: 1, x: 0 }}
-          exit={{ opacity: 0, scale: 0.8, x: 20 }}
-          transition={{
-            duration: 0.4, // Shorter duration for responsiveness
-            delay: index * 0.15, // Shorter delay between options
-            easing: "ease-out",
-          }}
-        >
-          {option}
-        </Motion.div>
-      </Show>
-    </Presence>
+    <Motion.button
+      class={optionButtonClass}
+      onClick={onClick}
+      initial={{ opacity: 0, scale: 0.8, x: 80 }}
+      animate={{ opacity: 1, scale: 1, x: 0 }}
+      exit={{ opacity: 0, scale: 0.8, x: 80 }}
+      transition={{
+        duration: 0.2,
+        delay: index * 0.05,
+        easing: "ease-out",
+      }}
+    >
+      {option}
+    </Motion.button>
   );
 }
 
 export const OptionChain = () => {
-  // Always show options when this component is rendered (controlled by parent)
-  const isShown = () => true;
-
+  const isLoggedIn = false;
+  
+  const handleOptionClick = (option: string) => {
+    console.log(`Clicked option: ${option}`);
+    // Add your option handling logic here
+  };
+  
+  const handleLoginClick = () => {
+    console.log("Login clicked");
+    // Add your login logic here
+    fetch("https://api.example.com/", {}).then(response => response.json()).then(data => {
+      console.log(data);
+    });
+  };
+  
   return (
     <div>
-      {OPTIONS.map((option, index) => {
-        return <Option index={index} option={option} isVisible={isShown} />;
-      })}
+      {!isLoggedIn ? (
+        <Option index={0} option={"Login"} onClick={handleLoginClick} />
+      ) : (
+        OPTIONS.map((option, index) => {
+          return (
+            <Option 
+              index={index} 
+              option={option} 
+              onClick={() => handleOptionClick(option)} 
+            />
+          );
+        })
+      )}
     </div>
   );
 };

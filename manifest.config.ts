@@ -13,11 +13,17 @@ export default defineManifest({
 		},
 		default_popup: "index.html",
 	},
+	web_accessible_resources: [
+		{
+			resources: ["src/popup-main.ts"],
+			matches: ["<all_urls>"],
+		},
+	],
 	content_scripts: [
 		{
 			js: ["src/content/main.ts"],
 			matches: ["https://*/*"],
 		},
 	],
-	permissions: ["activeTab", "contentSettings"],
+	permissions: ["activeTab", "contentSettings", "storage"],
 });
