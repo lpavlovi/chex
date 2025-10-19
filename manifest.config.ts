@@ -15,7 +15,7 @@ export default defineManifest({
 	},
 	web_accessible_resources: [
 		{
-			resources: ["src/popup-main.ts"],
+			resources: ["src/popup/main.ts"],
 			matches: ["<all_urls>"],
 		},
 	],

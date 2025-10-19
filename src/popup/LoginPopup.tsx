@@ -1,5 +1,13 @@
 import { createSignal, createEffect } from "solid-js";
 
+const containerClass = "width: 300px; padding: 20px; background: white; color: black;";
+const titleClass = "margin: 0 0 20px 0; font-size: 18px;";
+const formClass = "display: flex; flex-direction: column; gap: 15px;";
+const labelClass = "display: block; margin-bottom: 5px; font-size: 14px;";
+const inputClass = "width: 100%; padding: 8px; border: 1px solid #ccc; font-size: 14px; box-sizing: border-box;";
+const buttonClass = "padding: 10px; background: black; color: white; border: none; font-size: 14px; cursor: pointer;";
+const statusClass = "margin-top: 15px; font-size: 12px;";
+
 interface LoginPopupProps {
   onLogin?: (credentials: { email: string; password: string }) => void;
 }
@@ -65,12 +73,12 @@ export function LoginPopup(props: LoginPopupProps) {
   });
 
   return (
-    <div style="width: 300px; padding: 20px; background: white; color: black;">
-      <h1 style="margin: 0 0 20px 0; font-size: 18px;">Login</h1>
+    <div class={containerClass}>
+      <h1 class={titleClass}>Login</h1>
       
-      <form onSubmit={handleSubmit} style="display: flex; flex-direction: column; gap: 15px;">
+      <form onSubmit={handleSubmit} class={formClass}>
         <div>
-          <label for="email" style="display: block; margin-bottom: 5px; font-size: 14px;">Email</label>
+          <label for="email" class={labelClass}>Email</label>
           <input
             id="email"
             type="email"
@@ -79,12 +87,12 @@ export function LoginPopup(props: LoginPopupProps) {
             onInput={(e) => setEmail(e.currentTarget.value)}
             disabled={isLoading()}
             required
-            style="width: 100%; padding: 8px; border: 1px solid #ccc; font-size: 14px; box-sizing: border-box;"
+            class={inputClass}
           />
         </div>
         
         <div>
-          <label for="password" style="display: block; margin-bottom: 5px; font-size: 14px;">Password</label>
+          <label for="password" class={labelClass}>Password</label>
           <input
             id="password"
             type="password"
@@ -93,20 +101,20 @@ export function LoginPopup(props: LoginPopupProps) {
             onInput={(e) => setPassword(e.currentTarget.value)}
             disabled={isLoading()}
             required
-            style="width: 100%; padding: 8px; border: 1px solid #ccc; font-size: 14px; box-sizing: border-box;"
+            class={inputClass}
           />
         </div>
         
         <button
           type="submit"
           disabled={isLoading()}
-          style="padding: 10px; background: black; color: white; border: none; font-size: 14px; cursor: pointer;"
+          class={buttonClass}
         >
           {isLoading() ? "Logging in..." : "Login"}
         </button>
       </form>
       
-      <div style={`margin-top: 15px; font-size: 12px; color: ${isError() ? 'red' : 'green'};`}>
+      <div class={`${statusClass} color: ${isError() ? 'red' : 'green'};`}>
         {status()}
       </div>
     </div>
