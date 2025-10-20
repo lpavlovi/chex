@@ -87,6 +87,7 @@ export function LoginPopup(props: LoginPopupProps) {
 
   // Check if user is already logged in
   createEffect(async () => {
+    console.log("Checking login status");
     try {
       const result = await chrome.storage.local.get([
         "isLoggedIn",

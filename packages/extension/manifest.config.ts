@@ -19,6 +19,9 @@ export default defineManifest({
       matches: ["<all_urls>"],
     },
   ],
+  background: {
+    service_worker: "src/background/main.ts",
+  },
   content_scripts: [
     {
       js: ["src/content/main.ts"],
