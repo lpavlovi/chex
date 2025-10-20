@@ -1,12 +1,13 @@
+import { css } from "solid-styled-components";
 import { createSignal, createEffect } from "solid-js";
 
-const containerClass = "width: 300px; padding: 20px; background: white; color: black;";
-const titleClass = "margin: 0 0 20px 0; font-size: 18px;";
-const formClass = "display: flex; flex-direction: column; gap: 15px;";
-const labelClass = "display: block; margin-bottom: 5px; font-size: 14px;";
-const inputClass = "width: 100%; padding: 8px; border: 1px solid #ccc; font-size: 14px; box-sizing: border-box;";
-const buttonClass = "padding: 10px; background: black; color: white; border: none; font-size: 14px; cursor: pointer;";
-const statusClass = "margin-top: 15px; font-size: 12px;";
+const containerClass = css`width: 300px; padding: 20px; background: white; color: black;`;
+const titleClass = css`margin: 0 0 20px 0; font-size: 18px;`;
+const formClass = css`display: flex; flex-direction: column; gap: 15px;`;
+const labelClass = css`display: block; margin-bottom: 5px; font-size: 14px;`;
+const inputClass = css`width: 100%; padding: 8px; border: 1px solid #ccc; font-size: 14px; box-sizing: border-box;`;
+const buttonClass = css`padding: 10px; background: black; color: white; border: none; font-size: 14px; cursor: pointer;`;
+const statusClass = css`margin-top: 15px; font-size: 12px;`;
 
 interface LoginPopupProps {
   onLogin?: (credentials: { email: string; password: string }) => void;

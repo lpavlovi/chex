@@ -22,7 +22,6 @@ function mountApp() {
   shadow.appendChild(style);
 
   let cssStyleString = extractCss();
-  console.log(cssStyleString); // This shouldn't be empty
   style.textContent = cssStyleString;
 
   // Initial render
@@ -31,6 +30,5 @@ function mountApp() {
 
 // Only mount if we're in extension context (not development mode)
 if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
-  console.log("Mounting app");
   mountApp();
 }
