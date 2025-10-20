@@ -1,0 +1,26 @@
+{
+	"name": "chex",
+	"version": "0.0.0",
+	"description": "Chex - Chrome Extension with API backend",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "pnpm --parallel --recursive dev",
+		"build": "pnpm --recursive build",
+		"type-check": "pnpm --recursive type-check",
+		"clean": "pnpm --recursive clean",
+		"extension:dev": "pnpm --filter @chex/extension dev",
+		"extension:build": "pnpm --filter @chex/extension build",
+		"api:dev": "pnpm --filter @chex/api dev",
+		"api:build": "pnpm --filter @chex/api build"
+	},
+	"devDependencies": {
+		"typescript": "^5.7.2",
+		"prettier": "^3.6.2"
+	},
+	"engines": {
+		"node": ">=18.0.0",
+		"pnpm": ">=8.0.0"
+	},
+	"packageManager": "pnpm@9.0.0"
+}
