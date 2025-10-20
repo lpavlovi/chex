@@ -25,5 +25,10 @@ export default defineManifest({
       matches: ["https://*/*"],
     },
   ],
-  permissions: ["activeTab", "contentSettings", "storage"],
+  permissions: ["activeTab", "contentSettings", "storage", "identity"],
+  oauth2: {
+    client_id:
+      "566663842945-m74ug2jffp3moqfjkhao4aqg5s6vlggc.apps.googleusercontent.com",
+    scopes: ["openid", "email", "profile"],
+  },
 });
