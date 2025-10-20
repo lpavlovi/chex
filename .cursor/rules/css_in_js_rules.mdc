@@ -1,7 +1,6 @@
 ---
-alwaysApply: true
+alwaysApply: false
 ---
-
 # CSS-in-JS Rules for SolidJS Chrome Extension
 
 ## Primary Rule: Use `css` function for CSS-in-JS
