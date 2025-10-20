@@ -25,7 +25,7 @@ function mountPopupApp() {
   document.head.appendChild(styleElement);
 
   // Initial render
-  render(() => createComponent(LoginPopup, { }), container);
+  render(() => createComponent(LoginPopup, {}), container);
 
   // Initial style extraction
   updateStyles();

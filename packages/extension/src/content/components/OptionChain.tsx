@@ -28,7 +28,15 @@ const optionButtonClass = css`
   cursor: pointer;
 `;
 
-function Option({ index, option, onClick }: { index: number; option: string; onClick?: () => void }) {
+function Option({
+  index,
+  option,
+  onClick,
+}: {
+  index: number;
+  option: string;
+  onClick?: () => void;
+}) {
   return (
     <Motion.button
       class={optionButtonClass}
@@ -49,20 +57,22 @@ function Option({ index, option, onClick }: { index: number; option: string; onC
 
 export const OptionChain = () => {
   const isLoggedIn = false;
-  
+
   const handleOptionClick = (option: string) => {
     console.log(`Clicked option: ${option}`);
     // Add your option handling logic here
   };
-  
+
   const handleLoginClick = () => {
     console.log("Login clicked");
     // Add your login logic here
-    fetch("https://api.example.com/", {}).then(response => response.json()).then(data => {
-      console.log(data);
-    });
+    fetch("https://api.example.com/", {})
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
   };
-  
+
   return (
     <div>
       {!isLoggedIn ? (
@@ -70,10 +80,10 @@ export const OptionChain = () => {
       ) : (
         OPTIONS.map((option, index) => {
           return (
-            <Option 
-              index={index} 
-              option={option} 
-              onClick={() => handleOptionClick(option)} 
+            <Option
+              index={index}
+              option={option}
+              onClick={() => handleOptionClick(option)}
             />
           );
         })

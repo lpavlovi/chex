@@ -1,29 +1,29 @@
 import { defineManifest } from "@crxjs/vite-plugin";
 
 export default defineManifest({
-	manifest_version: 3,
-	name: "Hello Extensions",
-	version: "0.1",
-	icons: {
-		48: "public/hello_extensions.png",
-	},
-	action: {
-		default_icon: {
-			48: "public/hello_extensions.png",
-		},
-		default_popup: "index.html",
-	},
-	web_accessible_resources: [
-		{
-			resources: ["src/popup/main.ts"],
-			matches: ["<all_urls>"],
-		},
-	],
-	content_scripts: [
-		{
-			js: ["src/content/main.ts"],
-			matches: ["https://*/*"],
-		},
-	],
-	permissions: ["activeTab", "contentSettings", "storage"],
+  manifest_version: 3,
+  name: "Hello Extensions",
+  version: "0.1",
+  icons: {
+    48: "public/hello_extensions.png",
+  },
+  action: {
+    default_icon: {
+      48: "public/hello_extensions.png",
+    },
+    default_popup: "index.html",
+  },
+  web_accessible_resources: [
+    {
+      resources: ["src/popup/main.ts"],
+      matches: ["<all_urls>"],
+    },
+  ],
+  content_scripts: [
+    {
+      js: ["src/content/main.ts"],
+      matches: ["https://*/*"],
+    },
+  ],
+  permissions: ["activeTab", "contentSettings", "storage"],
 });
