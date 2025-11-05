@@ -56,7 +56,10 @@ export function App() {
   createEffect(() => {
     if (isActive()) {
       document.addEventListener("click", handleClick, true);
-      chrome.runtime.sendMessage({ type: "echo", message: "Hello from content script" });
+      chrome.runtime.sendMessage({
+        type: "echo",
+        message: "Hello from content script",
+      });
     } else {
       document.removeEventListener("click", handleClick, true);
     }

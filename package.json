@@ -1,7 +1,7 @@
 {
-	"name": "chex",
+	"name": "chaiex",
 	"version": "0.0.0",
-	"description": "Chex - Chrome Extension with API backend",
+	"description": "Chrome AI Extension",
 	"private": true,
 	"type": "module",
 	"scripts": {

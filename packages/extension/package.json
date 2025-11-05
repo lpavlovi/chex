@@ -1,7 +1,7 @@
 {
   "name": "@chex/extension",
   "version": "0.0.1",
-  "description": "Chex Chrome Extension",
+  "description": "Chrome AI Extension",
   "type": "module",
   "scripts": {
     "start": "vite",

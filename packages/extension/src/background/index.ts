@@ -1,18 +1,25 @@
-import { log } from './utils';
-import { handleLoginMessage } from './login';
-import type { ExtensionMessage } from '@chex/shared';
+import { log } from "./utils";
+import { handleLoginMessage } from "./login";
+import type { ExtensionMessage } from "@chex/shared";
 
 // Define the handlers
 function connectionHandler(port: chrome.runtime.Port) {
   log(`Connection established: ${port.name}`);
 }
 
-function messageHandler(message: ExtensionMessage, sender: chrome.runtime.MessageSender, sendResponse: (response: any) => void) {
+function messageHandler(
+  message: ExtensionMessage,
+  sender: chrome.runtime.MessageSender,
+  sendResponse: (response: any) => void,
+) {
   // Handle different message types
   switch (message.type) {
     case "echo":
       log(`Echo message: ${message.message}`);
-      sendResponse({ message: "Echo received", originalMessage: message.message });
+      sendResponse({
+        message: "Echo received",
+        originalMessage: message.message,
+      });
       break;
     case "login":
       log(`Login with token: ${message.token}`);

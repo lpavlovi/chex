@@ -11,7 +11,7 @@ const isDevMode = process.env.DEV_MODE === "true";
 
 export default defineConfig({
   plugins: [
-    solid({ hot: true , ssr: true}),
+    solid({ hot: true, ssr: true }),
     ...(isDevMode ? [] : [crx({ manifest })]),
     ...(devBuild
       ? []

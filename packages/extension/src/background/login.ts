@@ -1,4 +1,4 @@
-import { log } from './utils';
+import { log } from "./utils";
 
 export function handleLoginMessage(token: string): string {
   log("Login requested");
