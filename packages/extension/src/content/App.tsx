@@ -24,7 +24,6 @@ const detectMacOS: () => boolean = () => {
 export function App() {
   const [isActive, setIsActive] = createSignal(false);
   const [isMac, setIsMac] = createSignal(false);
-  const [lastToggleTime, setLastToggleTime] = createSignal(0);
 
   const handleClick = (event: MouseEvent) => {
     // TODO: Implement click handler
@@ -49,20 +48,15 @@ export function App() {
     if (!isCorrectKey) {
       return;
     }
-
     event.preventDefault();
-
-    const now = Date.now();
-    const timeSinceLastToggle = now - lastToggleTime();
-
     setIsActive((prev) => !prev);
-    setLastToggleTime(now);
   };
 
   // Effect to manage click listener based on visibility
   createEffect(() => {
     if (isActive()) {
       document.addEventListener("click", handleClick, true);
+      chrome.runtime.sendMessage({ type: "echo", message: "Hello from content script" });
     } else {
       document.removeEventListener("click", handleClick, true);
     }
@@ -70,15 +64,11 @@ export function App() {
 
   onMount(() => {
     setIsMac(detectMacOS());
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown, true);
   });
 
   onCleanup(() => {
-    document.addEventListener("keydown", handleKeyDown);
-  });
-
-  onCleanup(() => {
-    document.removeEventListener("keydown", handleKeyDown);
+    document.removeEventListener("keydown", handleKeyDown, true);
     document.removeEventListener("click", handleClick, true);
   });
 

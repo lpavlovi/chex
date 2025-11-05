@@ -1,7 +1,7 @@
 {
   "name": "@chex/extension",
-  "version": "0.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "Chex Chrome Extension",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -24,6 +24,7 @@
     "vite-plugin-zip-pack": "^1.2.4"
   },
   "dependencies": {
+    "@chex/shared": "workspace:*",
     "@google/genai": "^1.19.0",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.2",
