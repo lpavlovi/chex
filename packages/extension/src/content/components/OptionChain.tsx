@@ -57,16 +57,10 @@ function Option({
 }
 
 export const OptionChain = () => {
-  const [userInfo, { login, logout }] = useUserInfo();
-  console.log(`OptionChain - userInfo - ${userInfo.status} ${userInfo.user.email}`);
-  console.log(userInfo);
-  console.log("are we rendering the OptionChain again?");
-
-  const isLoggedIn = userInfo.status === "LOGGED_IN";
+  const isLoggedIn = false;
 
   const handleOptionClick = (option: string) => {
     console.log(`Clicked option: ${option}`);
-    // Add your option handling logic here
   };
 
   const handleLoginClick = () => {
@@ -75,8 +69,6 @@ export const OptionChain = () => {
 
   return (
     <div>
-      <span>{userInfo.status}</span>
-      <Option index={0} option={userInfo.status} />
       {!isLoggedIn ? (
         <Option index={1} option={"Login"} onClick={handleLoginClick} />
       ) : (

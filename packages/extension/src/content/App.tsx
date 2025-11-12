@@ -4,6 +4,7 @@ import { Motion, Presence } from "solid-motionone";
 import { Emblem } from "./components/Emblem";
 import { OptionChain } from "./components/OptionChain";
 import { UserProvider } from "./context/user/provider";
+import { ChexCore } from "./components/ChexCore";
 
 const appContainerClass = css`
   position: fixed;
@@ -78,7 +79,7 @@ export function App() {
 
   return (
     <UserProvider>
-      <Presence exitBeforeEnter>
+      <Presence>
         <Show when={isActive()}>
           <Motion.div
             class={appContainerClass}
@@ -91,7 +92,7 @@ export function App() {
             }}
           >
             <Emblem isMac={isMac()} />
-            <OptionChain />
+            <ChexCore />
           </Motion.div>
         </Show>
       </Presence>
