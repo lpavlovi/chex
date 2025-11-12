@@ -3,6 +3,7 @@ import { createSignal, onMount, onCleanup, createEffect, Show } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
 import { Emblem } from "./components/Emblem";
 import { OptionChain } from "./components/OptionChain";
+import { UserProvider } from "./context/user/provider";
 
 const appContainerClass = css`
   position: fixed;
@@ -76,22 +77,24 @@ export function App() {
   });
 
   return (
-    <Presence exitBeforeEnter>
-      <Show when={isActive()}>
-        <Motion.div
-          class={appContainerClass}
-          initial={{ opacity: 0, scale: 0.8, y: -20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: -20 }}
-          transition={{
-            duration: 0.2,
-            easing: "ease-out",
-          }}
-        >
-          <Emblem isMac={isMac()} />
-          <OptionChain />
-        </Motion.div>
-      </Show>
-    </Presence>
+    <UserProvider>
+      <Presence exitBeforeEnter>
+        <Show when={isActive()}>
+          <Motion.div
+            class={appContainerClass}
+            initial={{ opacity: 0, scale: 0.8, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: -20 }}
+            transition={{
+              duration: 0.2,
+              easing: "ease-out",
+            }}
+          >
+            <Emblem isMac={isMac()} />
+            <OptionChain />
+          </Motion.div>
+        </Show>
+      </Presence>
+    </UserProvider>
   );
 }

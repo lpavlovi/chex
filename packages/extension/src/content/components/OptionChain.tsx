@@ -1,5 +1,6 @@
 import { css } from "solid-styled-components";
 import { Motion } from "solid-motionone";
+import { useUserInfo } from "../context/user/hooks";
 
 const OPTIONS = ["Summarize", "Translate", "Speak"];
 
@@ -56,7 +57,12 @@ function Option({
 }
 
 export const OptionChain = () => {
-  const isLoggedIn = false;
+  const [userInfo, { login, logout }] = useUserInfo();
+  console.log(`OptionChain - userInfo - ${userInfo.status} ${userInfo.user.email}`);
+  console.log(userInfo);
+  console.log("are we rendering the OptionChain again?");
+
+  const isLoggedIn = userInfo.status === "LOGGED_IN";
 
   const handleOptionClick = (option: string) => {
     console.log(`Clicked option: ${option}`);
@@ -65,18 +71,14 @@ export const OptionChain = () => {
 
   const handleLoginClick = () => {
     console.log("Login clicked");
-    // Add your login logic here
-    fetch("https://api.example.com/", {})
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
   };
 
   return (
     <div>
+      <span>{userInfo.status}</span>
+      <Option index={0} option={userInfo.status} />
       {!isLoggedIn ? (
-        <Option index={0} option={"Login"} onClick={handleLoginClick} />
+        <Option index={1} option={"Login"} onClick={handleLoginClick} />
       ) : (
         OPTIONS.map((option, index) => {
           return (

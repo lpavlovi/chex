@@ -55,3 +55,15 @@ export async function loginWithGoogle(): Promise<LoginResults> {
 	return res;
 }
 
+export async function getUserInfo() {
+	const result = await chrome.storage.local.get([
+		"userEmail",
+		"userName",
+		"accessToken",
+		"isLoggedIn",
+		"loginTime",
+	]);
+	console.log(result);
+	return result;
+}
+
