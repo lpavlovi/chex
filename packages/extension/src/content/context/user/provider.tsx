@@ -5,12 +5,8 @@ import type { UserInfo, UserInfoContext, UserInfoValue } from "./entity";
 
 export function UserProvider(props: any) {
   const [value, setValue] = createStore({
-    user: {
-      name: null,
-      email: null,
-      isLoggedIn: false,
-    },
-    status: "LOADING",
+    user: { name: "Luka", email: "me@lukapavlovic.com", isLoggedIn: true },
+    status: "LOGGED_IN",
   } as UserInfoValue);
 
   const userInfoContext: UserInfoContext = [
@@ -46,5 +42,5 @@ export function UserProvider(props: any) {
     <UserContext.Provider value={userInfoContext}>
       {props.children}
     </UserContext.Provider>
-  )
-};
+  );
+}

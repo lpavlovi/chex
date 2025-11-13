@@ -40,13 +40,17 @@ export function LoginPopup(props: LoginPopupProps) {
 
   const handleGoogleLogin = async () => {
     console.log("handleGoogleLogin");
-    const googleLoginResult = await chrome.runtime.sendMessage({ type: "login" });
+    const googleLoginResult = await chrome.runtime.sendMessage({
+      type: "login",
+    });
     console.log(googleLoginResult);
   };
 
   // Check if user is already logged in
   createEffect(async () => {
-    const userInfoResult = await chrome.runtime.sendMessage({ type: "userInfo" });
+    const userInfoResult = await chrome.runtime.sendMessage({
+      type: "userInfo",
+    });
     console.log(userInfoResult);
   });
 

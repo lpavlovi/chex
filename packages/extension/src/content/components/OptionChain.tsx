@@ -1,6 +1,6 @@
 import { css } from "solid-styled-components";
 import { Motion } from "solid-motionone";
-import { useUserInfo } from "../context/user/hooks";
+import { JSX } from "solid-js";
 
 const OPTIONS = ["Summarize", "Translate", "Speak"];
 
@@ -31,11 +31,11 @@ const optionButtonClass = css`
 
 function Option({
   index,
-  option,
+  children,
   onClick,
 }: {
   index: number;
-  option: string;
+  children?: JSX.Element;
   onClick?: () => void;
 }) {
   return (
@@ -51,14 +51,21 @@ function Option({
         easing: "ease-out",
       }}
     >
-      {option}
+      {children}
     </Motion.button>
   );
 }
 
-export const OptionChain = () => {
-  const isLoggedIn = false;
+function SummarizeOption(props: { index: number }) {
+  function summarizeCallback() {}
+  return (
+    <Option index={props.index} onClick={summarizeCallback}>
+      Summarize
+    </Option>
+  );
+}
 
+export const OptionChain = (props: { isLoggedIn: boolean }) => {
   const handleOptionClick = (option: string) => {
     console.log(`Clicked option: ${option}`);
   };
@@ -67,20 +74,15 @@ export const OptionChain = () => {
     console.log("Login clicked");
   };
 
+  console.log(props);
   return (
     <div>
-      {!isLoggedIn ? (
-        <Option index={1} option={"Login"} onClick={handleLoginClick} />
+      {!props.isLoggedIn ? (
+        <Option index={0} onClick={handleLoginClick}>
+          Login
+        </Option>
       ) : (
-        OPTIONS.map((option, index) => {
-          return (
-            <Option
-              index={index}
-              option={option}
-              onClick={() => handleOptionClick(option)}
-            />
-          );
-        })
+        <SummarizeOption index={0} />
       )}
     </div>
   );

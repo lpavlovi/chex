@@ -5,7 +5,8 @@ import { Emblem } from "./components/Emblem";
 import { UserProvider } from "./context/user/provider";
 import { ChexCore } from "./components/ChexCore";
 
-const CHROME_EXTENSION = (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id);
+const CHROME_EXTENSION =
+  typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id;
 
 function sendEcho() {
   if (CHROME_EXTENSION) {
