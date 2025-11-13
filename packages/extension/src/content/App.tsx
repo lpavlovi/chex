@@ -2,10 +2,24 @@ import { css } from "solid-styled-components";
 import { createSignal, onMount, onCleanup, createEffect, Show } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
 import { Emblem } from "./components/Emblem";
-import { OptionChain } from "./components/OptionChain";
 import { UserProvider } from "./context/user/provider";
 import { ChexCore } from "./components/ChexCore";
 
+const CHROME_EXTENSION = (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id);
+
+function sendEcho() {
+  if (CHROME_EXTENSION) {
+    return chrome.runtime.sendMessage({
+      type: "echo",
+      message: "Hello from content script",
+    });
+  } else {
+    console.log({
+      type: "echo",
+      message: "Hello from content script",
+    });
+  }
+}
 const appContainerClass = css`
   position: fixed;
   top: 20px;
@@ -30,15 +44,6 @@ export function App() {
   const handleClick = (event: MouseEvent) => {
     // TODO: Implement click handler
     return;
-    // if (isActive()) {
-    //   event.preventDefault();
-    //   event.stopPropagation();
-
-    //   const element = event.target as HTMLElement;
-    //   console.log(element);
-
-    //   setIsActive(false);
-    // }
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -58,10 +63,7 @@ export function App() {
   createEffect(() => {
     if (isActive()) {
       document.addEventListener("click", handleClick, true);
-      chrome.runtime.sendMessage({
-        type: "echo",
-        message: "Hello from content script",
-      });
+      sendEcho();
     } else {
       document.removeEventListener("click", handleClick, true);
     }

@@ -7,9 +7,11 @@ export function ChexCore() {
   console.log(userInfo);
   console.log("are we rendering the ChexCore again?");
 
+  const isLoggedIn = () => userInfo.status === "LOGGED_IN";
+
   return (
     <div>
-      <span></span>
+      <span>{isLoggedIn() ? "You are logged in" : "You are not logged in"}</span>
       <OptionChain></OptionChain>
     </div>
   );

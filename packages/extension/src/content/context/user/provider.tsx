@@ -1,10 +1,17 @@
 import { onMount, createEffect } from "solid-js";
 import { createStore } from "solid-js/store";
 import { DEFAULT_USER_INFO_VALUE, UserContext } from "./entity";
-import type { UserInfo, UserInfoContext } from "./entity";
+import type { UserInfo, UserInfoContext, UserInfoValue } from "./entity";
 
 export function UserProvider(props: any) {
-  const [value, setValue] = createStore(DEFAULT_USER_INFO_VALUE);
+  const [value, setValue] = createStore({
+    user: {
+      name: null,
+      email: null,
+      isLoggedIn: false,
+    },
+    status: "LOADING",
+  } as UserInfoValue);
 
   const userInfoContext: UserInfoContext = [
     value,
@@ -25,15 +32,15 @@ export function UserProvider(props: any) {
   ];
 
   // setup the user info
-  onMount(() => {
-    console.log("UserProvider - onMount - Setting up the user context");
-    setTimeout(() => {
-      console.log("UserProvider - onMount - delayed login simulation")
-      const fakeUserInfo: UserInfo = { isLoggedIn: true, name: "FakeLuka", email: "fake@luka.com" };
-      const [_, { login }] = userInfoContext;
-      login(fakeUserInfo);
-    }, 2000)
-  });
+  // onMount(() => {
+  //   console.log("UserProvider - onMount - Setting up the user context");
+  //   setTimeout(() => {
+  //     console.log("UserProvider - onMount - delayed login simulation")
+  //     const fakeUserInfo: UserInfo = { isLoggedIn: true, name: "FakeLuka", email: "fake@luka.com" };
+  //     const [_, { login }] = userInfoContext;
+  //     login(fakeUserInfo);
+  //   }, 2000)
+  // });
 
   return (
     <UserContext.Provider value={userInfoContext}>
