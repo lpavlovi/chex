@@ -1,6 +1,7 @@
 import { css } from "solid-styled-components";
 import { Motion } from "solid-motionone";
-import { JSX } from "solid-js";
+import { createMemo, JSX, onCleanup } from "solid-js";
+import { processElementClickEventCapture } from "../logic/capture";
 
 const OPTIONS = ["Summarize", "Translate", "Speak"];
 
@@ -57,7 +58,28 @@ function Option({
 }
 
 function SummarizeOption(props: { index: number }) {
-  function summarizeCallback() {}
+  function captureElementSelection(event: any) {
+    event.preventDefault();
+    processElementClickEventCapture(event);
+    document.removeEventListener("click", captureElementSelection, {
+      capture: true,
+    });
+  }
+
+  function summarizeCallback() {
+    console.log("SummarizeOption - callback - listening");
+    document.addEventListener("click", captureElementSelection, {
+      capture: true,
+    });
+  }
+
+  onCleanup(() => {
+    console.log("SummarizeOption - onCleanup");
+    document.removeEventListener("click", captureElementSelection, {
+      capture: true,
+    });
+  });
+
   return (
     <Option index={props.index} onClick={summarizeCallback}>
       Summarize
@@ -74,7 +96,6 @@ export const OptionChain = (props: { isLoggedIn: boolean }) => {
     console.log("Login clicked");
   };
 
-  console.log(props);
   return (
     <div>
       {!props.isLoggedIn ? (
