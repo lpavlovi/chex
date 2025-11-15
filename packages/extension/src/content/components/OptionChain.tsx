@@ -1,9 +1,12 @@
 import { css } from "solid-styled-components";
 import { Motion } from "solid-motionone";
-import { createMemo, JSX, onCleanup } from "solid-js";
-import { processElementClickEventCapture } from "../logic/capture";
-
-const OPTIONS = ["Summarize", "Translate", "Speak"];
+import { onCleanup } from "solid-js";
+import {
+  processElementClickEventCapture,
+  processPlaceholder,
+} from "../logic/capture";
+import { usePortal } from "../context/portal/hooks";
+import type { JSX, Setter } from "solid-js";
 
 const optionButtonClass = css`
   width: 100%;
@@ -57,24 +60,34 @@ function Option({
   );
 }
 
-function SummarizeOption(props: { index: number }) {
+function SummarizeOption(props: { index: number; submitSummary: (summary: string) => void }) {
+  const [_, setRect] = usePortal();
   function captureElementSelection(event: any) {
     event.preventDefault();
-    processElementClickEventCapture(event);
+    let elem = event.target as Element;
+    console.log(elem);
+    const rect = elem.getBoundingClientRect();
+    console.log(rect);
+    setRect(rect);
+
+    // processElementClickEventCapture(event);
+    processPlaceholder(event).then((result) => {
+      console.log(result);
+      props.submitSummary(result);
+    });
+
     document.removeEventListener("click", captureElementSelection, {
       capture: true,
     });
   }
 
   function summarizeCallback() {
-    console.log("SummarizeOption - callback - listening");
     document.addEventListener("click", captureElementSelection, {
       capture: true,
     });
   }
 
   onCleanup(() => {
-    console.log("SummarizeOption - onCleanup");
     document.removeEventListener("click", captureElementSelection, {
       capture: true,
     });
@@ -87,14 +100,15 @@ function SummarizeOption(props: { index: number }) {
   );
 }
 
-export const OptionChain = (props: { isLoggedIn: boolean }) => {
-  const handleOptionClick = (option: string) => {
-    console.log(`Clicked option: ${option}`);
-  };
-
+export const OptionChain = (props: {
+  isLoggedIn: boolean;
+  setInfo: Setter<string | null>;
+}) => {
   const handleLoginClick = () => {
     console.log("Login clicked");
   };
+
+  const handleSubmitSummary = (summary: string) => props.setInfo(summary);
 
   return (
     <div>
@@ -103,7 +117,7 @@ export const OptionChain = (props: { isLoggedIn: boolean }) => {
           Login
         </Option>
       ) : (
-        <SummarizeOption index={0} />
+        <SummarizeOption index={0} submitSummary={handleSubmitSummary}/>
       )}
     </div>
   );

@@ -37,3 +37,9 @@ export async function processElementClickEventCapture(event: MouseEvent) {
   console.log(jsonBody);
   console.log("done");
 }
+
+export function processPlaceholder(event: MouseEvent): Promise<string> {
+  return Promise.resolve(
+    "This text describes a JavaScript engine that is small, embeddable, fast, and has near-complete ES2023 support. It boasts a low startup time, can compile JavaScript to executables, uses reference counting garbage collection with cycle removal, and includes a command-line interpreter with colorization. It also features a small standard library with C library wrappers."
+  );
+}

@@ -4,6 +4,8 @@ import { Motion, Presence } from "solid-motionone";
 import { Emblem } from "./components/Emblem";
 import { UserProvider } from "./context/user/provider";
 import { ChexCore } from "./components/ChexCore";
+import { Portal } from "solid-js/web";
+import { PortalProvider } from "./context/portal/provider";
 
 const CHROME_EXTENSION =
   typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id;
@@ -82,23 +84,25 @@ export function App() {
 
   return (
     <UserProvider>
-      <Presence>
-        <Show when={isActive()}>
-          <Motion.div
-            class={appContainerClass}
-            initial={{ opacity: 0, scale: 0.8, y: -20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: -20 }}
-            transition={{
-              duration: 0.2,
-              easing: "ease-out",
-            }}
-          >
-            <Emblem isMac={isMac()} />
-            <ChexCore />
-          </Motion.div>
-        </Show>
-      </Presence>
+      <PortalProvider>
+        <Presence>
+          <Show when={isActive()}>
+            <Motion.div
+              class={appContainerClass}
+              initial={{ opacity: 0, scale: 0.8, y: -20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: -20 }}
+              transition={{
+                duration: 0.2,
+                easing: "ease-out",
+              }}
+            >
+              <Emblem isMac={isMac()} />
+              <ChexCore />
+            </Motion.div>
+          </Show>
+        </Presence>
+      </PortalProvider>
     </UserProvider>
   );
 }

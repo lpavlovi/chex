@@ -1,4 +1,3 @@
-import { onMount, createEffect } from "solid-js";
 import { createStore } from "solid-js/store";
 import { DEFAULT_USER_INFO_VALUE, UserContext } from "./entity";
 import type { UserInfo, UserInfoContext, UserInfoValue } from "./entity";
