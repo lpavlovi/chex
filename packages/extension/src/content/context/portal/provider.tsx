@@ -78,6 +78,7 @@ function Outline(props: { rect: DOMRect }) {
   // const DASH_PATTERN_PERIOD = 280; // 14px dash + 14px gap
   // const perimeterPx = Math.ceil(actualPerimeter / DASH_PATTERN_PERIOD) * DASH_PATTERN_PERIOD;
 
+  // actually, I'll just keep it simple
   const perimeterPx = 40;
   
   // Calculate document dimensions to ensure SVG covers entire scrollable area
