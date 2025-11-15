@@ -7,8 +7,6 @@ const svgCss = css`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   pointer-events: none;
 `;
 
@@ -38,10 +36,10 @@ const keyframesStyle = `
  * @returns {string} The SVG path string with rounded corners.
  */
 function generateRectPath(rect: DOMRect, radius: number = 8): string {
-  const x1 = rect.left - 5;
-  const y1 = rect.top - 5;
-  const x2 = rect.right + 5;
-  const y2 = rect.bottom + 5;
+  const x1 = rect.left + window.scrollX - 5;
+  const y1 = rect.top + window.scrollY - 5;
+  const x2 = rect.right + window.scrollX + 5;
+  const y2 = rect.bottom + window.scrollY + 5;
 
   // Ensure radius doesn't exceed half the width or height
   const maxRadius = Math.min((x2 - x1) / 2, (y2 - y1) / 2);
@@ -81,8 +79,28 @@ function Outline(props: { rect: DOMRect }) {
   // const perimeterPx = Math.ceil(actualPerimeter / DASH_PATTERN_PERIOD) * DASH_PATTERN_PERIOD;
 
   const perimeterPx = 40;
+  
+  // Calculate document dimensions to ensure SVG covers entire scrollable area
+  // This ensures paths with coordinates beyond the viewport are visible
+  const docWidth = Math.max(
+    document.documentElement.scrollWidth,
+    document.body.scrollWidth,
+    window.innerWidth
+  );
+  const docHeight = Math.max(
+    document.documentElement.scrollHeight,
+    document.body.scrollHeight,
+    window.innerHeight
+  );
+  const viewBox = `0 0 ${docWidth} ${docHeight}`;
+  
   return (
-    <svg class={svgCss}>
+    <svg 
+      class={svgCss} 
+      viewBox={viewBox}
+      width={docWidth}
+      height={docHeight}
+    >
       <style>{keyframesStyle}</style>
       <path
         d={generateRectPath(props.rect)}
