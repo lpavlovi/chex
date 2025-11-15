@@ -2,6 +2,8 @@ import { css } from "solid-styled-components";
 import { Motion } from "solid-motionone";
 import { onCleanup } from "solid-js";
 import {
+  getClosestElementFromMouseEvent,
+  postSummarizeTextContents,
   processElementClickEventCapture,
   processPlaceholder,
 } from "../logic/capture";
@@ -60,21 +62,34 @@ function Option({
   );
 }
 
-function SummarizeOption(props: { index: number; submitSummary: (summary: string) => void }) {
+function SummarizeOption(props: {
+  index: number;
+  submitSummary: (summary: string) => void;
+}) {
   const [_, setRect] = usePortal();
   function captureElementSelection(event: any) {
     event.preventDefault();
-    let elem = event.target as Element;
-    console.log(elem);
-    const rect = elem.getBoundingClientRect();
-    console.log(rect);
-    setRect(rect);
 
-    // processElementClickEventCapture(event);
-    processPlaceholder(event).then((result) => {
-      console.log(result);
-      props.submitSummary(result);
-    });
+    const elementResult = getClosestElementFromMouseEvent(event);
+    if (elementResult === null) {
+      // nothing more to do
+      return;
+    }
+
+    const [targetElement, textContents] = elementResult;
+    setRect(targetElement.getBoundingClientRect());
+    postSummarizeTextContents(textContents)
+      .then((request) => request.json())
+      .then((jsonBody) => {
+        if (jsonBody.success) {
+          props.submitSummary(jsonBody.message);
+        } else {
+          throw Error(jsonBody.error || "Something went wrong");
+        }
+      })
+      .catch((e: any) => {
+        console.error(e);
+      });
 
     document.removeEventListener("click", captureElementSelection, {
       capture: true,
@@ -117,7 +132,7 @@ export const OptionChain = (props: {
           Login
         </Option>
       ) : (
-        <SummarizeOption index={0} submitSummary={handleSubmitSummary}/>
+        <SummarizeOption index={0} submitSummary={handleSubmitSummary} />
       )}
     </div>
   );

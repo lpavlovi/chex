@@ -15,7 +15,7 @@ app.use("*", logger());
 app.use(
   "*",
   cors({
-    origin: ["http://localhost:3000", "http://localhost:5173"], // Add your frontend URLs
+    origin: "*", // Allow all origins for development/testing (including curl)
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
@@ -51,7 +51,8 @@ app.post("/api/summary", async (c) => {
       return c.json({ error: "Missing 'text_content' field" }, 400);
     }
 
-    const textContentSummary = await summarize(textContent);
+    // const textContentSummary = await summarize(textContent);
+    const textContentSummary = await Promise.resolve("testing");
 
     return c.json({
       success: true,
