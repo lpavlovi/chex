@@ -4,25 +4,9 @@ import { Motion, Presence } from "solid-motionone";
 import { Emblem } from "./components/Emblem";
 import { UserProvider } from "./context/user/provider";
 import { ChexCore } from "./components/ChexCore";
-import { Portal } from "solid-js/web";
 import { PortalProvider } from "./context/portal/provider";
 
-const CHROME_EXTENSION =
-  typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id;
 
-function sendEcho() {
-  if (CHROME_EXTENSION) {
-    return chrome.runtime.sendMessage({
-      type: "echo",
-      message: "Hello from content script",
-    });
-  } else {
-    console.log({
-      type: "echo",
-      message: "Hello from content script",
-    });
-  }
-}
 const appContainerClass = css`
   position: fixed;
   top: 20px;
@@ -44,11 +28,6 @@ export function App() {
   const [isActive, setIsActive] = createSignal(false);
   const [isMac, setIsMac] = createSignal(false);
 
-  const handleClick = (event: MouseEvent) => {
-    // TODO: Implement click handler
-    return;
-  };
-
   const handleKeyDown = (event: KeyboardEvent) => {
     const isMacOS = isMac();
     const isCorrectKey = isMacOS
@@ -65,10 +44,8 @@ export function App() {
   // Effect to manage click listener based on visibility
   createEffect(() => {
     if (isActive()) {
-      document.addEventListener("click", handleClick, true);
-      sendEcho();
-    } else {
-      document.removeEventListener("click", handleClick, true);
+      // sendEcho();
+      console.log("ECHO");
     }
   });
 
@@ -79,7 +56,6 @@ export function App() {
 
   onCleanup(() => {
     document.removeEventListener("keydown", handleKeyDown, true);
-    document.removeEventListener("click", handleClick, true);
   });
 
   return (

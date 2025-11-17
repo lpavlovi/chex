@@ -4,8 +4,6 @@ import { onCleanup } from "solid-js";
 import {
   getClosestElementFromMouseEvent,
   postSummarizeTextContents,
-  processElementClickEventCapture,
-  processPlaceholder,
 } from "../logic/capture";
 import { usePortal } from "../context/portal/hooks";
 import type { JSX, Setter } from "solid-js";
