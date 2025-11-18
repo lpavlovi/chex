@@ -1,18 +1,17 @@
 import { log } from "./utils";
-import { handleGoogleLogin, handleUserInfoRequest } from "./login";
-import type { ExtensionMessage } from "@chex/shared";
+import { handleGoogleLogin } from "./logic/google_login";
+import type { WorkerMessage } from "../shared/types/message";
+import { handleByokLogin } from "./logic/byok_login";
 
-// Define the handlers
 function connectionHandler(port: chrome.runtime.Port) {
   log(`Connection established: ${port.name}`);
 }
 
 function messageHandler(
-  message: ExtensionMessage,
-  sender: chrome.runtime.MessageSender,
+  message: WorkerMessage,
+  _sender: chrome.runtime.MessageSender,
   sendResponse: (response: any) => void,
 ) {
-  // Handle different message types
   switch (message.type) {
     case "echo":
       log(`Echo message: ${message.message}`);
@@ -21,13 +20,13 @@ function messageHandler(
         originalMessage: message.message,
       });
       break;
-    case "login":
-      log("Login requested");
-      handleGoogleLogin(sendResponse);
+    case "byok_login":
+      log("BYOK Login requested");
+      handleByokLogin(message, sendResponse);
       break;
-    case "userInfo":
-      log("User Info requested");
-      handleUserInfoRequest(sendResponse);
+    case "google_login":
+      log("Google Login requested");
+      handleGoogleLogin(sendResponse);
       break;
     case "logout":
       log("Logout requested");

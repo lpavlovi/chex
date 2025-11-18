@@ -1,5 +1,5 @@
-import { LoginResults } from "../popup/login_utils";
-import { log } from "./utils";
+import { log } from "../utils";
+import type { LoginResults } from "../../popup/login_utils";
 
 export async function handleGoogleLogin(sendResponse: (response: any) => void) {
   let res: LoginResults | null = null;
@@ -43,21 +43,4 @@ export async function handleGoogleLogin(sendResponse: (response: any) => void) {
   }
 
   sendResponse(res);
-}
-
-export async function handleUserInfoRequest(
-  sendResponse: (response: any) => void,
-) {
-  chrome.storage.local
-    .get(["userEmail", "userName", "loginTime"])
-    .then((result) =>
-      sendResponse({
-        userEmail: result.userEmail,
-        userName: result.userName,
-        loginTime: result.loginTime,
-      }),
-    )
-    .catch((error) => {
-      sendResponse({ success: false, error });
-    });
 }
