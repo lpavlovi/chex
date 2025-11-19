@@ -1,12 +1,11 @@
 import { css } from "solid-styled-components";
 import { Motion } from "solid-motionone";
 import { onCleanup } from "solid-js";
-import {
-  getClosestElementFromMouseEvent,
-  postSummarizeTextContents,
-} from "../logic/capture";
 import { usePortal } from "../context/portal/hooks";
+import { getClosestElementFromMouseEvent } from "../logic/capture";
+import { getWorkerDispatcher } from "../../shared/worker_dispatcher";
 import type { JSX, Setter } from "solid-js";
+import type { WorkerDispatcher } from "../../shared/worker_dispatcher";
 
 const optionButtonClass = css`
   width: 100%;
@@ -76,18 +75,20 @@ function SummarizeOption(props: {
 
     const [targetElement, textContents] = elementResult;
     setRect(targetElement.getBoundingClientRect());
-    postSummarizeTextContents(textContents)
-      .then((request) => request.json())
-      .then((jsonBody) => {
-        if (jsonBody.success) {
-          props.submitSummary(jsonBody.message);
-        } else {
-          throw Error(jsonBody.error || "Something went wrong");
-        }
-      })
-      .catch((e: any) => {
-        console.error(e);
-      });
+    const d: WorkerDispatcher = getWorkerDispatcher();
+
+    // postSummarizeTextContents(textContents)
+    //   .then((request) => request.json())
+    //   .then((jsonBody) => {
+    //     if (jsonBody.success) {
+    //       props.submitSummary(jsonBody.message);
+    //     } else {
+    //       throw Error(jsonBody.error || "Something went wrong");
+    //     }
+    //   })
+    //   .catch((e: any) => {
+    //     console.error(e);
+    //   });
 
     document.removeEventListener("click", captureElementSelection, {
       capture: true,

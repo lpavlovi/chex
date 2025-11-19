@@ -1,7 +1,11 @@
 // Message type definitions for Chrome extension communication
 
-export const ACTIONS = ["summarize" , "translate" , "speak"] as const;
-export type Action = (typeof ACTIONS)[number];
+export const ACTIONS = ["summarize", "translate", "speak"] as const;
+export type ActionOption = (typeof ACTIONS)[number];
+export type Action = {
+  type: ActionOption;
+  contents: string;
+};
 
 export type EchoMessage = {
   readonly type: "echo";
@@ -27,4 +31,9 @@ export type ActionMessage = {
   readonly actions: Action[];
 };
 
-export type WorkerMessage = EchoMessage | ByokLoginMessage | GoogleLoginMessage | LogoutMessage | ActionMessage;
+export type WorkerMessage =
+  | EchoMessage
+  | ByokLoginMessage
+  | GoogleLoginMessage
+  | LogoutMessage
+  | ActionMessage;

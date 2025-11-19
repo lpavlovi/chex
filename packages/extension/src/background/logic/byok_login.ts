@@ -12,7 +12,6 @@ export async function handleByokLogin(
     await chrome.storage.local.set({
       apiKey: message.apiKey,
       apiKeySetAt: Date.now(),
-      isLoggedIn: true,
     });
 
     log("API key stored successfully");
