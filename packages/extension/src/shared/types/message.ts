@@ -17,9 +17,10 @@ export type GoogleLoginMessage = {
   readonly type: "google_login";
 };
 
-export type ByokLoginMessage = {
-  readonly type: "byok_login";
+export type SaveKeyMessage = {
+  readonly type: "save_key";
   readonly apiKey: string;
+  readonly modelId: string;
 };
 
 export type LogoutMessage = {
@@ -33,7 +34,7 @@ export type ActionMessage = {
 
 export type WorkerMessage =
   | EchoMessage
-  | ByokLoginMessage
+  | SaveKeyMessage
   | GoogleLoginMessage
   | LogoutMessage
   | ActionMessage;

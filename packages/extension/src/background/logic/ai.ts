@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 
 let aiSingleton: GoogleGenAI | undefined = undefined;
 
-export function getGeminiInstance() {
+export async function getGeminiInstance() {
   if (aiSingleton === undefined) {
     const apiKey = process.env.GEMINI_API_KEY;
     aiSingleton = new GoogleGenAI({ apiKey });

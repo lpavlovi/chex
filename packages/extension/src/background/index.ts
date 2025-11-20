@@ -1,17 +1,76 @@
-import { log } from "./utils";
+import { log, saveApiKey } from "./utils";
 import { handleGoogleLogin } from "./logic/google_login";
-import { handleByokLogin } from "./logic/byok_login";
 import { useAiTool } from "./logic/ai";
-import type { WorkerMessage } from "../shared/types/message";
+import type {
+  Action,
+  SaveKeyMessage,
+  WorkerMessage,
+} from "../shared/types/message";
 
 function connectionHandler(port: chrome.runtime.Port) {
   log(`Connection established: ${port.name}`);
 }
 
+async function deleteApiKeyHandler(
+  message: any,
+  sendResponse: (response: any) => void
+) {
+  try {
+    const localStoragePromise = chrome.storage.local.remove([
+      "apiKey",
+      "modelId",
+      "apiKeySetAt",
+    ]);
+    const sessionStoragePromise = chrome.storage.session.remove([
+      "apiKey",
+      "modelId",
+      "apiKeySetAt",
+    ]);
+
+    await Promise.all([localStoragePromise, sessionStoragePromise]);
+
+    log("API key removed successfully");
+    sendResponse({ success: true });
+  } catch (error) {
+    log(`Error removing API key: ${error}`);
+    sendResponse({ success: false, error: String(error) });
+  }
+}
+
+async function saveApiKeyHandler(
+  message: SaveKeyMessage,
+  sendResponse: (response: any) => void
+) {
+  try {
+    await saveApiKey(message.apiKey, message.modelId);
+    sendResponse({ success: true });
+  } catch (error) {
+    log(`Error storing API key: ${error}`);
+    sendResponse({ success: false, error: String(error) });
+  }
+}
+
+function handleAction(
+  actions: Action[],
+  sendResponse: (response: any) => void
+): void {
+  // Only handles the "summarize" action
+  const firstAction = actions.find((a) => a.type === "summarize");
+  if (firstAction === undefined) {
+    return sendResponse({ success: false, error: "No valid actions found" });
+  }
+  const aiToolPrompt = `Summarize the following contents.
+Use as few sentences as neccessary.
+It must use a maximum of 4 sentences.
+
+${firstAction.contents}`.trimEnd();
+  useAiTool(aiToolPrompt, sendResponse);
+}
+
 function messageHandler(
   message: WorkerMessage,
   _sender: chrome.runtime.MessageSender,
-  sendResponse: (response: any) => void,
+  sendResponse: (response: any) => void
 ) {
   switch (message.type) {
     case "echo":
@@ -21,19 +80,12 @@ function messageHandler(
         originalMessage: message.message,
       });
       break;
-    case "byok_login":
-      log("BYOK Login requested");
-      handleByokLogin(message, sendResponse);
+    case "save_key":
+      saveApiKeyHandler(message, sendResponse);
       break;
     case "action":
       log("AI tool usage requested");
-      // handle only the first action
-      if (message.actions.length > 0) {
-        const firstAction = message.actions[0];
-        useAiTool(firstAction.contents, sendResponse);
-      } else {
-        sendResponse({ success: false, error: "No actions" });
-      }
+      handleAction(message.actions, sendResponse);
       break;
     case "google_login":
       log("Google Login requested");
