@@ -11,7 +11,7 @@ class ServiceWorkerDispatcher implements WorkerDispatcher {
   sendMessage(message: WorkerMessage): any {
     console.warn(
       "ServiceWorkerDispatcher.sendMessage is not implemented.",
-      message
+      message,
     );
   }
 }

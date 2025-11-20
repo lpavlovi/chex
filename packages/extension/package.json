@@ -9,27 +9,28 @@
     "dev:extension": "vite",
     "build": "vite build",
     "serve": "vite preview",
+    "type-check": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
   "license": "MIT",
   "devDependencies": {
-    "@crxjs/vite-plugin": "^2.2.0",
-    "@types/chrome": "^0.1.22",
-    "@types/node": "^24.3.1",
+    "@crxjs/vite-plugin": "^2.2.1",
+    "@types/chrome": "^0.1.30",
+    "@types/node": "^24.10.1",
     "prettier": "^3.6.2",
-    "typescript": "^5.7.2",
-    "vite": "^6.0.0",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.1",
     "vite-plugin-css-injected-by-js": "^3.5.2",
-    "vite-plugin-solid": "^2.11.6",
+    "vite-plugin-solid": "^2.11.10",
     "vite-plugin-zip-pack": "^1.2.4"
   },
   "dependencies": {
     "@chex/shared": "workspace:*",
-    "@google/genai": "^1.19.0",
+    "@google/genai": "^1.30.0",
     "clsx": "^2.1.1",
-    "dotenv": "^17.2.2",
+    "dotenv": "^17.2.3",
     "goober": "^2.1.18",
-    "solid-js": "^1.9.5",
+    "solid-js": "^1.9.10",
     "solid-motionone": "^1.0.4",
     "solid-styled-components": "^0.28.5"
   }

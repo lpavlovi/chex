@@ -1,8 +1,8 @@
 import { log } from "../utils";
-import type { LoginResults } from "../../popup/login_utils";
 
 export async function handleGoogleLogin(sendResponse: (response: any) => void) {
-  let res: LoginResults | null = null;
+  // TODO: Add explicit results type
+  let res: any = null;
 
   try {
     // Use Chrome Identity API to get Google OAuth token

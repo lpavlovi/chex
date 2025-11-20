@@ -9,10 +9,6 @@ const infoPanelCss = css`
   width: min(42vw, 480px);
 `;
 
-export function InfoPanel(props: {children?: JSX.Element;}) {
-  return (
-    <div class={infoPanelCss}>
-      {props.children}
-    </div>
-  );
+export function InfoPanel(props: { children?: JSX.Element }) {
+  return <div class={infoPanelCss}>{props.children}</div>;
 }

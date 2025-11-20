@@ -1,7 +1,7 @@
 import { DOMElement } from "solid-js/jsx-runtime";
 
 export function getClosestElementFromMouseEvent(
-  event: MouseEvent
+  event: MouseEvent,
 ): [DOMElement, string] | null {
   if (!event.target) {
     console.log("invalid event target");

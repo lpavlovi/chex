@@ -56,15 +56,17 @@ function generateRectPath(rect: DOMRect, radius: number = 8): string {
   // Top-left corner: quadratic curve back to start
   // Z (Close path)
 
-  return `M ${x1 + r} ${y1} ` +
-         `L ${x2 - r} ${y1} ` +
-         `Q ${x2} ${y1} ${x2} ${y1 + r} ` +
-         `L ${x2} ${y2 - r} ` +
-         `Q ${x2} ${y2} ${x2 - r} ${y2} ` +
-         `L ${x1 + r} ${y2} ` +
-         `Q ${x1} ${y2} ${x1} ${y2 - r} ` +
-         `L ${x1} ${y1 + r} ` +
-         `Q ${x1} ${y1} ${x1 + r} ${y1} Z`;
+  return (
+    `M ${x1 + r} ${y1} ` +
+    `L ${x2 - r} ${y1} ` +
+    `Q ${x2} ${y1} ${x2} ${y1 + r} ` +
+    `L ${x2} ${y2 - r} ` +
+    `Q ${x2} ${y2} ${x2 - r} ${y2} ` +
+    `L ${x1 + r} ${y2} ` +
+    `Q ${x1} ${y2} ${x1} ${y2 - r} ` +
+    `L ${x1} ${y1 + r} ` +
+    `Q ${x1} ${y1} ${x1 + r} ${y1} Z`
+  );
 }
 
 function Outline(props: { rect: DOMRect }) {
@@ -72,7 +74,7 @@ function Outline(props: { rect: DOMRect }) {
   // const width = props.rect.width + 10; // +5 on each side
   // const height = props.rect.height + 10; // +5 on each side
   // const actualPerimeter = 2 * width + 2 * height;
-  
+
   // Round up to nearest multiple of dash pattern period (14px dash + 14px gap = 28px)
   // This ensures smooth looping animation without choppy transitions
   // const DASH_PATTERN_PERIOD = 280; // 14px dash + 14px gap
@@ -80,28 +82,23 @@ function Outline(props: { rect: DOMRect }) {
 
   // actually, I'll just keep it simple
   const perimeterPx = 40;
-  
+
   // Calculate document dimensions to ensure SVG covers entire scrollable area
   // This ensures paths with coordinates beyond the viewport are visible
   const docWidth = Math.max(
     document.documentElement.scrollWidth,
     document.body.scrollWidth,
-    window.innerWidth
+    window.innerWidth,
   );
   const docHeight = Math.max(
     document.documentElement.scrollHeight,
     document.body.scrollHeight,
-    window.innerHeight
+    window.innerHeight,
   );
   const viewBox = `0 0 ${docWidth} ${docHeight}`;
-  
+
   return (
-    <svg 
-      class={svgCss} 
-      viewBox={viewBox}
-      width={docWidth}
-      height={docHeight}
-    >
+    <svg class={svgCss} viewBox={viewBox} width={docWidth} height={docHeight}>
       <style>{keyframesStyle}</style>
       <path
         d={generateRectPath(props.rect)}

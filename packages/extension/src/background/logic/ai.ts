@@ -12,7 +12,7 @@ export function getGeminiInstance() {
 
 export async function useAiTool(
   textContents: string,
-  sendResponse: (response: any) => void
+  sendResponse: (response: any) => void,
 ): Promise<any> {
   const ai = getGeminiInstance();
 

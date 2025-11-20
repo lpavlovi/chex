@@ -11,7 +11,7 @@ function connectionHandler(port: chrome.runtime.Port) {
 function messageHandler(
   message: WorkerMessage,
   _sender: chrome.runtime.MessageSender,
-  sendResponse: (response: any) => void
+  sendResponse: (response: any) => void,
 ) {
   switch (message.type) {
     case "echo":
@@ -27,7 +27,13 @@ function messageHandler(
       break;
     case "action":
       log("AI tool usage requested");
-      useAiTool(message.contents, sendResponse);
+      // handle only the first action
+      if (message.actions.length > 0) {
+        const firstAction = message.actions[0];
+        useAiTool(firstAction.contents, sendResponse);
+      } else {
+        sendResponse({ success: false, error: "No actions" });
+      }
       break;
     case "google_login":
       log("Google Login requested");

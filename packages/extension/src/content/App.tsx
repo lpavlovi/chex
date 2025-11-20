@@ -6,7 +6,6 @@ import { UserProvider } from "./context/user/provider";
 import { ChexCore } from "./components/ChexCore";
 import { PortalProvider } from "./context/portal/provider";
 
-
 const appContainerClass = css`
   position: fixed;
   top: 20px;

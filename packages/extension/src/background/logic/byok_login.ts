@@ -5,7 +5,7 @@ type ByokLoginResponse = { success: true } | { success: false; error: any };
 
 export async function handleByokLogin(
   message: ByokLoginMessage,
-  sendResponse: (byokLoginResponse: ByokLoginResponse) => void
+  sendResponse: (byokLoginResponse: ByokLoginResponse) => void,
 ) {
   try {
     // Store API key securely in chrome.storage.local
