@@ -1,11 +1,30 @@
-// Message type definitions for Chrome extension communication
+// Sample language options as the language ISO strings
+export const LANGUAGE_OPTIONS = ["en", "de", "fr"] as const;
+
+export type LanguageOption = (typeof LANGUAGE_OPTIONS)[number];
 
 export const ACTIONS = ["summarize", "translate", "speak"] as const;
+
 export type ActionOption = (typeof ACTIONS)[number];
-export type Action = {
-  type: ActionOption;
+
+export type SpeakAction = {
+  type: "speak";
+  contents: string;
+  language: LanguageOption;
+};
+
+export type SummarizeAction = {
+  type: "summarize";
   contents: string;
 };
+
+export type TranslateAction = {
+  type: "translate";
+  contents: string;
+  language: LanguageOption;
+};
+
+export type Action = SpeakAction | SummarizeAction | TranslateAction;
 
 export type EchoMessage = {
   readonly type: "echo";

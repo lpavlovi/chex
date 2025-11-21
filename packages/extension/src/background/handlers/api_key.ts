@@ -26,4 +26,3 @@ export async function saveApiKeyHandler(
     sendResponse({ success: false, error: String(error) });
   }
 }
-
