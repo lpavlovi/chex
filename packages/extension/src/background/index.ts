@@ -1,53 +1,11 @@
-import { log, saveApiKey } from "./utils";
-import { handleGoogleLogin } from "./logic/google_login";
+import { log } from "./utils";
+import { handleGoogleLogin } from "./handlers/google_login";
 import { useAiTool } from "./logic/ai";
-import type {
-  Action,
-  SaveKeyMessage,
-  WorkerMessage,
-} from "../shared/types/message";
+import { saveApiKeyHandler } from "./handlers/api_key";
+import type { Action, WorkerMessage } from "../shared/types/message";
 
 function connectionHandler(port: chrome.runtime.Port) {
   log(`Connection established: ${port.name}`);
-}
-
-async function deleteApiKeyHandler(
-  message: any,
-  sendResponse: (response: any) => void
-) {
-  try {
-    const localStoragePromise = chrome.storage.local.remove([
-      "apiKey",
-      "modelId",
-      "apiKeySetAt",
-    ]);
-    const sessionStoragePromise = chrome.storage.session.remove([
-      "apiKey",
-      "modelId",
-      "apiKeySetAt",
-    ]);
-
-    await Promise.all([localStoragePromise, sessionStoragePromise]);
-
-    log("API key removed successfully");
-    sendResponse({ success: true });
-  } catch (error) {
-    log(`Error removing API key: ${error}`);
-    sendResponse({ success: false, error: String(error) });
-  }
-}
-
-async function saveApiKeyHandler(
-  message: SaveKeyMessage,
-  sendResponse: (response: any) => void
-) {
-  try {
-    await saveApiKey(message.apiKey, message.modelId);
-    sendResponse({ success: true });
-  } catch (error) {
-    log(`Error storing API key: ${error}`);
-    sendResponse({ success: false, error: String(error) });
-  }
 }
 
 function handleAction(
