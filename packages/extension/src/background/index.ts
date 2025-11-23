@@ -26,7 +26,7 @@ function messageHandler(
       break;
     case "action":
       log("AI tool usage requested");
-      handleAction(message.actions, sendResponse);
+      handleAction(message.actions, message.contents, sendResponse);
       break;
     case "google_login":
       log("Google Login requested");

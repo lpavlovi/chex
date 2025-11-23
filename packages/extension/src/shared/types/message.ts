@@ -9,18 +9,15 @@ export type ActionOption = (typeof ACTIONS)[number];
 
 export type SpeakAction = {
   type: "speak";
-  contents: string;
   language: LanguageOption;
 };
 
 export type SummarizeAction = {
   type: "summarize";
-  contents: string;
 };
 
 export type TranslateAction = {
   type: "translate";
-  contents: string;
   language: LanguageOption;
 };
 
@@ -49,6 +46,7 @@ export type LogoutMessage = {
 export type ActionMessage = {
   readonly type: "action";
   readonly actions: Action[];
+  readonly contents: string;
 };
 
 export type WorkerMessage =

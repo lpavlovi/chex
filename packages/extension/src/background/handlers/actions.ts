@@ -3,55 +3,25 @@ import { generateContentFromGeminiFlashLite } from "../logic/ai";
 
 export async function handleAction(
   actions: Action[],
+  contents: string,
   sendResponse: (response: any) => void
 ): Promise<void> {
   if (actions.length === 0) {
-    sendResponse({ error: "No actions provided" });
+    sendResponse({ success: false, error: "No actions provided" });
     return;
   }
 
-  let currentContents = actions[0].contents;
+  let generatedContents = contents;
 
   for (let i = 0; i < actions.length; i++) {
-    const action = actions[i];
-    let prompt: string;
-
-    // Build prompt based on action type
-    if (action.type === "summarize") {
-      prompt = buildPromptForSummaryGeneration(currentContents);
-    } else if (action.type === "translate") {
-      prompt = buildPromptForTranslation(currentContents, action.language);
-    } else if (action.type === "speak") {
-      // For speak action, use the original contents or pass through
-      prompt = currentContents;
-    } else {
-      sendResponse({ error: `Unknown action type: ${(action as any).type}` });
-      return;
-    }
-
-    try {
-      const responseText = await generateContentFromGeminiFlashLite(prompt);
-      
-      if (responseText === undefined) {
-        sendResponse({ error: `No response from AI for action ${i + 1}` });
-        return;
-      }
-
-      // Use this response as input for next action, or as final result
-      if (i === actions.length - 1) {
-        // Last action - send final response
-        sendResponse({ result: responseText });
-      } else {
-        // Not last action - use output as input for next
-        currentContents = responseText;
-      }
-    } catch (error) {
-      sendResponse({ error: `Failed to process action ${i + 1}: ${error instanceof Error ? error.message : String(error)}` });
+    const currResponse = await processAction(actions[i], generatedContents);
+    if (currResponse !== null) {
+      sendResponse({ success: false, error: "No actions provided" });
       return;
     }
   }
+  sendResponse({ success: true, contents });
 }
-
 
 function buildPromptForSummaryGeneration(contents: string) {
   const aiToolPrompt = `Summarize the following contents.
@@ -71,19 +41,22 @@ ${contents.trimEnd()}`;
   return aiToolPrompt;
 }
 
-async function processAction(action: Action): Promise<string> {
+async function processAction(
+  action: Action,
+  contents: string
+): Promise<string | null> {
   let prompt;
   switch (action.type) {
     case "summarize":
-      prompt = buildPromptForSummaryGeneration(action.contents) || "";
+      prompt = buildPromptForSummaryGeneration(contents) || "";
       break;
     case "translate":
-      prompt =  buildPromptForTranslation(action.contents, action.language);
+      prompt = buildPromptForTranslation(contents, action.language);
       break;
     default:
       throw Error(`Action type ${action.type} is not implemented`);
   }
 
   const result = await generateContentFromGeminiFlashLite(prompt);
-  return result || "";
+  return result || null;
 }

@@ -6,6 +6,7 @@ import { getClosestElementFromMouseEvent } from "../logic/capture";
 import { getWorkerDispatcher } from "../../shared/worker_dispatcher";
 import type { JSX, Setter } from "solid-js";
 import type { WorkerDispatcher } from "../../shared/worker_dispatcher";
+import type { ActionMessage } from "../../shared/types/message";
 
 const optionButtonClass = css`
   width: 100%;
@@ -76,6 +77,12 @@ function SummarizeOption(props: {
     const [targetElement, textContents] = elementResult;
     setRect(targetElement.getBoundingClientRect());
     const d: WorkerDispatcher = getWorkerDispatcher();
+    const m: ActionMessage = {
+      type: "action",
+      actions: [],
+      contents: textContents
+    };
+    d.sendMessage(m).then(props.submitSummary);
 
     // postSummarizeTextContents(textContents)
     //   .then((request) => request.json())
