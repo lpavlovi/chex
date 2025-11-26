@@ -9,5 +9,5 @@ export const DEFAULT_PORTAL_VALUE: PortalInfo = null;
 
 export const PortalContext = createContext<PortalInfoContext>([
   () => DEFAULT_PORTAL_VALUE,
-  (v: any) => {},
+  (_v: PortalInfo | ((prev: PortalInfo) => PortalInfo)) => {},
 ]);

@@ -1,7 +1,7 @@
 import { DOMElement } from "solid-js/jsx-runtime";
 
 export function getClosestElementFromMouseEvent(
-  event: MouseEvent,
+  event: MouseEvent
 ): [DOMElement, string] | null {
   if (!event.target) {
     console.log("invalid event target");
@@ -31,16 +31,4 @@ export function getClosestElementFromMouseEvent(
   }
 
   return null;
-}
-
-export function postSummarizeTextContents(textContents: string) {
-  return fetch("http://localhost:3001/api/summary", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      text_content: textContents,
-    }),
-  });
 }
