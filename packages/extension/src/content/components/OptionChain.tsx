@@ -79,23 +79,24 @@ function SummarizeOption(props: {
     const d: WorkerDispatcher = getWorkerDispatcher();
     const m: ActionMessage = {
       type: "action",
-      actions: [],
-      contents: textContents
+      actions: [{ type: "summarize" }],
+      contents: textContents,
     };
-    d.sendMessage(m).then(props.submitSummary);
-
-    // postSummarizeTextContents(textContents)
-    //   .then((request) => request.json())
-    //   .then((jsonBody) => {
-    //     if (jsonBody.success) {
-    //       props.submitSummary(jsonBody.message);
-    //     } else {
-    //       throw Error(jsonBody.error || "Something went wrong");
-    //     }
-    //   })
-    //   .catch((e: any) => {
-    //     console.error(e);
-    //   });
+    d.sendMessage(m)
+      .then((response) => {
+        console.log(response);
+        if (response.success && response.contents) {
+          props.submitSummary(response.contents);
+        } else if (!response.success && response.error) {
+          props.submitSummary(response.error);
+        } else {
+          console.error("response from background script was wrong");
+          props.submitSummary("Something went wrong");
+        }
+      })
+      .catch((errorMessage: any) => {
+        console.error(errorMessage);
+      });
 
     document.removeEventListener("click", captureElementSelection, {
       capture: true,

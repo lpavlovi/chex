@@ -8,11 +8,10 @@ export interface WorkerDispatcher {
 }
 
 class ServiceWorkerDispatcher implements WorkerDispatcher {
-  sendMessage(message: WorkerMessage): any {
-    console.warn(
-      "ServiceWorkerDispatcher.sendMessage is not implemented.",
-      message,
-    );
+  sendMessage(message: WorkerMessage): Promise<any> {
+    console.log("ServiceWorkerDispatcher");
+    console.log(message);
+    return Promise.reject("ServiceWorkerDispatcher.sendMessage is not implemented.");
   }
 }
 

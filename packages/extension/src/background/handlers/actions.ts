@@ -15,7 +15,7 @@ export async function handleAction(
 
   for (let i = 0; i < actions.length; i++) {
     const currResponse = await processAction(actions[i], generatedContents);
-    if (currResponse !== null) {
+    if (currResponse === null) {
       sendResponse({ success: false, error: "No actions provided" });
       return;
     }

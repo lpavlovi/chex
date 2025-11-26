@@ -1,7 +1,7 @@
 import { createComponent } from "solid-js";
 import { render } from "solid-js/web";
-import { LoginPopup } from "./LoginPopup";
 import { extractCss } from "solid-styled-components";
+import { KeySubmission } from "./KeySubmission";
 
 let styleElement: HTMLStyleElement | null = null;
 
@@ -25,7 +25,7 @@ function mountPopupApp() {
   document.head.appendChild(styleElement);
 
   // Initial render
-  render(() => createComponent(LoginPopup, {}), container);
+  render(() => createComponent(KeySubmission, {}), container);
 
   // Initial style extraction
   updateStyles();

@@ -18,10 +18,12 @@ async function getGeminiInstance() {
   return aiSingleton;
 }
 
-export async function generateContentFromGeminiFlashLite(contents: string): Promise<string | undefined> {
+export async function generateContentFromGeminiFlashLite(
+  contents: string
+): Promise<string | undefined> {
   const ai = await getGeminiInstance();
   const aiResult = await ai.models.generateContent({
-    model: "gemini-2.5-flash-latest",
+    model: "gemini-2.5-flash-lite",
     contents: contents,
     config: {
       thinkingConfig: {
