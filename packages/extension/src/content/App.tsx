@@ -5,6 +5,8 @@ import { Emblem } from "./components/Emblem";
 import { UserProvider } from "./context/user/provider";
 import { ChexCore } from "./components/ChexCore";
 import { PortalProvider } from "./context/portal/provider";
+import { StateProvider } from "./context/state/provider";
+import { useAppActions } from "./context/state/hooks";
 
 const appContainerClass = css`
   position: fixed;
@@ -23,9 +25,10 @@ const detectMacOS: () => boolean = () => {
   return isMacOS;
 };
 
-export function App() {
+function AppContent() {
   const [isActive, setIsActive] = createSignal(false);
   const [isMac, setIsMac] = createSignal(false);
+  const actions = useAppActions();
 
   const handleKeyDown = (event: KeyboardEvent) => {
     const isMacOS = isMac();
@@ -38,13 +41,17 @@ export function App() {
     }
     event.preventDefault();
     setIsActive((prev) => !prev);
+
+    // Reset state when toggling app visibility
+    if (isActive()) {
+      actions.goToMenu();
+    }
   };
 
   // Effect to manage click listener based on visibility
   createEffect(() => {
     if (isActive()) {
-      // sendEcho();
-      console.log("ECHO");
+      console.log("App activated - ECHO");
     }
   });
 
@@ -58,29 +65,37 @@ export function App() {
   });
 
   return (
+    <PortalProvider>
+      <Presence>
+        <Show when={isActive()}>
+          <Motion.div
+            class={appContainerClass}
+            initial={{ opacity: 0, scale: 0.8, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: -20 }}
+            transition={{
+              duration: 0.1,
+              easing: "ease-out",
+            }}
+            onMotionComplete={() => {
+              console.log("Animation finished!");
+            }}
+          >
+            <Emblem isMac={isMac()} />
+            <ChexCore />
+          </Motion.div>
+        </Show>
+      </Presence>
+    </PortalProvider>
+  );
+}
+
+export function App() {
+  return (
     <UserProvider>
-      <PortalProvider>
-        <Presence>
-          <Show when={isActive()}>
-            <Motion.div
-              class={appContainerClass}
-              initial={{ opacity: 0, scale: 0.8, y: -20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8, y: -20 }}
-              transition={{
-                duration: 0.1,
-                easing: "ease-out",
-              }}
-              onMotionComplete={() => {
-                console.log("Animation finished!");
-              }}
-            >
-              <Emblem isMac={isMac()} />
-              <ChexCore />
-            </Motion.div>
-          </Show>
-        </Presence>
-      </PortalProvider>
+      <StateProvider>
+        <AppContent />
+      </StateProvider>
     </UserProvider>
   );
 }
