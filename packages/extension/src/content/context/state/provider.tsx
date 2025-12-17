@@ -1,11 +1,40 @@
 import { createStore } from "solid-js/store";
-import { AppStateContext, DEFAULT_APP_STATE } from "./entity";
+import { DEFAULT_APP_STATE, AppStateContext } from "./entity";
 import type { JSX } from "solid-js";
-import type { AppStateContextType } from "./entity";
+import type { AppStateContextType, AppStateFunctions } from "./entity";
 
 export function StateProvider(props: { children?: JSX.Element }) {
   const [state, setState] = createStore(DEFAULT_APP_STATE);
-  const appState: AppStateContextType = [state, setState];
+
+  const stateFunctions: AppStateFunctions = {
+    setIdle() {
+      setState("current", "idle");
+    },
+    setListening() {
+      setState("current", "listening");
+    },
+    setProcessing() {
+      setState("current", "processing");
+    },
+    setThinking() {
+      setState("current", "thinking");
+    },
+    setResponding() {
+      setState("current", "responding");
+    },
+    setError() {
+      setState("current", "error");
+    },
+    setLoading() {
+      setState("current", "loading");
+    },
+    reset() {
+      setState("current", "idle");
+    },
+  };
+
+  const appState: AppStateContextType = [state, stateFunctions];
+
   return (
     <AppStateContext.Provider value={appState}>
       {props.children}

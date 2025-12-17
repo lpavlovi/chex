@@ -6,7 +6,6 @@ import { UserProvider } from "./context/user/provider";
 import { ChexCore } from "./components/ChexCore";
 import { PortalProvider } from "./context/portal/provider";
 import { StateProvider } from "./context/state/provider";
-import { useAppActions } from "./context/state/hooks";
 
 const appContainerClass = css`
   position: fixed;
@@ -28,7 +27,6 @@ const detectMacOS: () => boolean = () => {
 function AppContent() {
   const [isActive, setIsActive] = createSignal(false);
   const [isMac, setIsMac] = createSignal(false);
-  const actions = useAppActions();
 
   const handleKeyDown = (event: KeyboardEvent) => {
     const isMacOS = isMac();
@@ -44,7 +42,6 @@ function AppContent() {
 
     // Reset state when toggling app visibility
     if (isActive()) {
-      actions.goToMenu();
     }
   };
 
