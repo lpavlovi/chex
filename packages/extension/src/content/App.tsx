@@ -65,28 +65,26 @@ function AppContent() {
   });
 
   return (
-    <PortalProvider>
-      <Presence>
-        <Show when={isActive()}>
-          <Motion.div
-            class={appContainerClass}
-            initial={{ opacity: 0, scale: 0.8, y: -20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: -20 }}
-            transition={{
-              duration: 0.1,
-              easing: "ease-out",
-            }}
-            onMotionComplete={() => {
-              console.log("Animation finished!");
-            }}
-          >
-            <Emblem isMac={isMac()} />
-            <ChexCore />
-          </Motion.div>
-        </Show>
-      </Presence>
-    </PortalProvider>
+    <Presence>
+      <Show when={isActive()}>
+        <Motion.div
+          class={appContainerClass}
+          initial={{ opacity: 0, scale: 0.8, y: -20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.8, y: -20 }}
+          transition={{
+            duration: 0.1,
+            easing: "ease-out",
+          }}
+          onMotionComplete={() => {
+            console.log("Animation finished!");
+          }}
+        >
+          <Emblem isMac={isMac()} />
+          <ChexCore />
+        </Motion.div>
+      </Show>
+    </Presence>
   );
 }
 
@@ -94,7 +92,9 @@ export function App() {
   return (
     <UserProvider>
       <StateProvider>
-        <AppContent />
+        <PortalProvider>
+          <AppContent />
+        </PortalProvider>
       </StateProvider>
     </UserProvider>
   );
