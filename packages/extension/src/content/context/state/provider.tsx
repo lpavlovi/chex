@@ -1,42 +1,38 @@
 import { createStore } from "solid-js/store";
-import { DEFAULT_APP_STATE, AppStateContext } from "./entity";
+import { IDLE_STATE, AppStateContext } from "./entity";
 import type { JSX } from "solid-js";
-import type { AppStateContextType, AppStateFunctions } from "./entity";
+import type { Action, State } from "../../logic/state";
 
 export function StateProvider(props: { children?: JSX.Element }) {
-  const [state, setState] = createStore(DEFAULT_APP_STATE);
+  const [state, setState] = createStore<State>(IDLE_STATE);
 
-  const stateFunctions: AppStateFunctions = {
-    setIdle() {
-      setState("current", "idle");
-    },
-    setListening() {
-      setState("current", "listening");
-    },
-    setProcessing() {
-      setState("current", "processing");
-    },
-    setThinking() {
-      setState("current", "thinking");
-    },
-    setResponding() {
-      setState("current", "responding");
-    },
-    setError() {
-      setState("current", "error");
-    },
-    setLoading() {
-      setState("current", "loading");
-    },
-    reset() {
-      setState("current", "idle");
-    },
-  };
+  function dispatch(action: Action) {
+    switch (action.type) {
+      case "ACTIVATE":
+        setState(IDLE_STATE);
+        return;
+      case "DEACTIVATE":
+        setState(IDLE_STATE);
+        return;
+      case "VISUAL_MODE":
+        console.log("visual_mode");
+        setState({ name: "VISUAL", selection: [] });
+        return;
+      case "ELEMENT_SELECT":
+        if (state.name !== "VISUAL") {
+          return;
+        }
 
-  const appState: AppStateContextType = [state, stateFunctions];
+        return;
+      default:
+        console.log(`default - ${action} - what happened here?`);
+        setState(IDLE_STATE);
+        return
+    }
+  }
 
   return (
-    <AppStateContext.Provider value={appState}>
+    <AppStateContext.Provider value={[state, dispatch]}>
       {props.children}
     </AppStateContext.Provider>
   );
