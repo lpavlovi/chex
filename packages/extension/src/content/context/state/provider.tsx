@@ -1,4 +1,4 @@
-import { createStore } from "solid-js/store";
+import { createStore, produce } from "solid-js/store";
 import { IDLE_STATE, AppStateContext } from "./entity";
 import type { JSX } from "solid-js";
 import type { Action, State } from "../../logic/state";
@@ -22,12 +22,18 @@ export function StateProvider(props: { children?: JSX.Element }) {
         if (state.name !== "VISUAL") {
           return;
         }
-
+        setState(
+          produce((state) => {
+            if (state.name === "VISUAL") {
+              state.selection.push(action.element);
+            }
+          }),
+        );
         return;
       default:
         console.log(`default - ${action} - what happened here?`);
         setState(IDLE_STATE);
-        return
+        return;
     }
   }
 
@@ -37,4 +43,3 @@ export function StateProvider(props: { children?: JSX.Element }) {
     </AppStateContext.Provider>
   );
 }
-
