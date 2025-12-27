@@ -1,21 +1,20 @@
 import { createStore, produce } from "solid-js/store";
-import { IDLE_STATE, AppStateContext } from "./entity";
+import { AppStateContext } from "./entity";
 import type { JSX } from "solid-js";
-import type { Action, State } from "../../logic/state";
+import { type Action, type State } from "../../logic/state";
 
 export function StateProvider(props: { children?: JSX.Element }) {
-  const [state, setState] = createStore<State>(IDLE_STATE);
+  const [state, setState] = createStore<State>({ name: "INACTIVE" });
 
   function dispatch(action: Action) {
     switch (action.type) {
       case "ACTIVATE":
-        setState(IDLE_STATE);
+        setState({ name: "IDLE" });
         return;
       case "DEACTIVATE":
-        setState(IDLE_STATE);
+        setState({ name: "INACTIVE" });
         return;
       case "VISUAL_MODE":
-        console.log("visual_mode");
         setState({ name: "VISUAL", selection: [] });
         return;
       case "ELEMENT_SELECT":
@@ -23,16 +22,16 @@ export function StateProvider(props: { children?: JSX.Element }) {
           return;
         }
         setState(
-          produce((state) => {
+          produce((state: State) => {
             if (state.name === "VISUAL") {
               state.selection.push(action.element);
             }
-          }),
+          })
         );
         return;
       default:
         console.log(`default - ${action} - what happened here?`);
-        setState(IDLE_STATE);
+        setState({ name: "INACTIVE" });
         return;
     }
   }

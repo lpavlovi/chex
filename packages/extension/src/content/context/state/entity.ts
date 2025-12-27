@@ -1,11 +1,10 @@
 import { createContext } from "solid-js";
-import { Action, State } from "../../logic/state";
+import { Action, INACTIVE_STATE, State } from "../../logic/state";
 
 type StateSetterType = (action: Action) => void;
-
-export const IDLE_STATE: State = { name: "IDLE" };
+function dispatchNoop(_action: Action) {}
 
 export const AppStateContext = createContext<[State, StateSetterType]>([
-  IDLE_STATE,
-  (_action: Action) => {},
+  INACTIVE_STATE,
+  dispatchNoop,
 ]);

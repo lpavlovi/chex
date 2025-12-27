@@ -1,11 +1,12 @@
 import { css } from "solid-styled-components";
-import { createSignal, onMount, onCleanup, createEffect, Show } from "solid-js";
+import { createSignal, createMemo, onMount, onCleanup, Show } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
 import { Emblem } from "./components/Emblem";
 import { UserProvider } from "./context/user/provider";
 import { ChexCore } from "./components/ChexCore";
 import { PortalProvider } from "./context/portal/provider";
 import { StateProvider } from "./context/state/provider";
+import { useAppState } from "./context/state/hooks";
 
 const appContainerClass = css`
   position: fixed;
@@ -25,8 +26,13 @@ const detectMacOS: () => boolean = () => {
 };
 
 function AppContent() {
-  const [isActive, setIsActive] = createSignal(false);
+  console.log("AppContent rendered");
+  const [state, dispatch] = useAppState();
   const [isMac, setIsMac] = createSignal(false);
+
+  // Derive isActive from state: active when not INACTIVE
+  // Use createMemo to ensure reactivity tracking
+  const isActive = createMemo(() => state.name !== "INACTIVE");
 
   const handleKeyDown = (event: KeyboardEvent) => {
     const isMacOS = isMac();
@@ -38,19 +44,13 @@ function AppContent() {
       return;
     }
     event.preventDefault();
-    setIsActive((prev) => !prev);
-
-    // Reset state when toggling app visibility
+    
     if (isActive()) {
+      dispatch({ type: "DEACTIVATE" });
+    } else {
+      dispatch({ type: "ACTIVATE" });
     }
   };
-
-  // Effect to manage click listener based on visibility
-  createEffect(() => {
-    if (isActive()) {
-      console.log("App activated - ECHO");
-    }
-  });
 
   onMount(() => {
     setIsMac(detectMacOS());
@@ -72,9 +72,6 @@ function AppContent() {
           transition={{
             duration: 0.1,
             easing: "ease-out",
-          }}
-          onMotionComplete={() => {
-            console.log("Animation finished!");
           }}
         >
           <Emblem isMac={isMac()} />

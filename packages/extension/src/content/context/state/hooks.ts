@@ -4,4 +4,3 @@ import { AppStateContext } from "./entity";
 export function useAppState() {
   return useContext(AppStateContext);
 }
-

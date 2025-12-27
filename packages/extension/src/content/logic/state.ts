@@ -1,9 +1,14 @@
 import { DOMElement } from "solid-js/jsx-runtime";
 
-export type IdleState = { name: "IDLE" };
-export type VisualState = { name: "VISUAL"; selection: any[] };
+export const INACTIVE_STATE = { name: "INACTIVE" } as const;
+export const IDLE_STATE = { name: "IDLE" } as const;
+export const VISUAL_STATE = { name: "VISUAL" , selection: [] as any[] } as const;
 
-export type State = IdleState | VisualState;
+export type InactiveState = typeof INACTIVE_STATE;
+export type IdleState = typeof IDLE_STATE;
+export type VisualState = typeof VISUAL_STATE;
+
+export type State = InactiveState | IdleState | VisualState;
 
 export type Action =
   | { type: "ACTIVATE" }
