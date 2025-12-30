@@ -4,6 +4,7 @@ import { Motion, Presence } from "solid-motionone";
 import { Emblem } from "./components/Emblem";
 import { UserProvider } from "./context/user/provider";
 import { ChexCore } from "./components/ChexCore";
+import { VisualMode } from "./components/VisualMode";
 import { PortalProvider } from "./context/portal/provider";
 import { StateProvider } from "./context/state/provider";
 import { useAppState } from "./context/state/hooks";
@@ -77,6 +78,11 @@ function AppContent() {
           <Emblem isMac={isMac()} />
           <ChexCore />
         </Motion.div>
+      </Show>
+
+      {/* Conditionally render VisualMode when in VISUAL state */}
+      <Show when={state.name === "VISUAL"}>
+        <VisualMode />
       </Show>
     </Presence>
   );

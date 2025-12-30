@@ -1,7 +1,6 @@
-import { createSignal } from "solid-js";
 import { css } from "solid-styled-components";
 import { Motion } from "solid-motionone";
-import { useUserInfo } from "../context/user/hooks";
+import { useAppState } from "../context/state/hooks";
 import type { JSX } from "solid-js";
 
 const optionButtonClass = css`
@@ -54,12 +53,11 @@ function Option({
 }
 
 export function ChexCore() {
-  const [userInfo, _] = useUserInfo();
+  const [_, dispatch] = useAppState();
+
   return (
-    <>
-      <div>
-        <Option>choose</Option>
-      </div>
-    </>
+    <div>
+      <Option onClick={() => dispatch({ type: "VISUAL_MODE" })}>visual</Option>
+    </div>
   );
 }
