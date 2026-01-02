@@ -114,11 +114,13 @@ export type WorkerMessage =
 ### CSS-in-JS (Strict Rule)
 
 - ✅ **Use `css` function from solid-styled-components, NEVER `styled()`**
+- ✅ **CSS classes MUST be static (defined as constants), NEVER dynamically generated**
 - Class names end with "Class" suffix (e.g., `containerClass`, `optionButtonClass`)
 - CSS variables are defined outside components for reuse
 - Use template literals for CSS strings
+- For conditional styling: create separate static classes for each variant, then conditionally apply them using class composition
 
-**Example:**
+**Static Class Example:**
 ```typescript
 const containerClass = css`
   width: 100%;
@@ -129,6 +131,61 @@ const containerClass = css`
 
 function Component() {
   return <div class={containerClass}>Content</div>;
+}
+```
+
+**Conditional Styling Example (Correct Pattern):**
+```typescript
+// Base class (static)
+const baseClass = css`
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+`;
+
+// Variant classes (static, one for each state)
+const visualClass = css`
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+`;
+
+const processingClass = css`
+  background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+`;
+
+const idleClass = css`
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+`;
+
+function Component() {
+  const [state] = useAppState();
+  
+  const stateClass = createMemo(() => {
+    switch (state.name) {
+      case "VISUAL":
+        return visualClass;
+      case "PROCESSING":
+        return processingClass;
+      default:
+        return idleClass;
+    }
+  });
+  
+  // Combine classes using template literals
+  return <div class={`${baseClass} ${stateClass()}`}>Content</div>;
+}
+```
+
+**❌ Anti-pattern (Dynamic CSS Generation - FORBIDDEN):**
+```typescript
+// DO NOT create CSS classes dynamically
+const getClass = (bg: string) => css`
+  background: ${bg};
+`;
+
+// DO NOT use functions that generate CSS based on runtime values
+function Component() {
+  const bg = getBackgroundForState(state.name);
+  return <div class={getClass(bg)}>Content</div>;
 }
 ```
 
@@ -323,10 +380,11 @@ Use `solid-motionone` with `Motion` components:
 4. **Follow the three-file pattern** for contexts (entity, hooks, provider)
 5. **Use `readonly` properties** for message types
 6. **Keep CSS classes outside components** when possible
-7. **Use const assertions** for literal type inference
-8. **Group imports** by external/internal, then alphabetically
-9. **Prefer `type` over `interface`** for unions
-10. **Log unknown actions/messages** in default cases for debugging
+7. **Use static CSS classes only** - never dynamically generate CSS classes (required for Chrome Extension compatibility)
+8. **Use const assertions** for literal type inference
+9. **Group imports** by external/internal, then alphabetically
+10. **Prefer `type` over `interface`** for unions
+11. **Log unknown actions/messages** in default cases for debugging
 
 ## Dependencies
 

@@ -2,11 +2,10 @@ import { css } from "solid-styled-components";
 import { useAppState } from "../context/state/hooks";
 import { createMemo } from "solid-js";
 
-// Base styling with dynamic background
-const emblemContainerClass = (bgGradient: string) => css`
+// Base styling
+const emblemContainerClass = css`
   width: 50px;
   height: 50px;
-  background: ${bgGradient};
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -26,28 +25,47 @@ const emblemContainerClass = (bgGradient: string) => css`
   -webkit-backdrop-filter: blur(10px);
 `;
 
-// Function to determine background based on state
-const getBackgroundForState = (stateName: string): string => {
-  switch (stateName) {
-    case "VISUAL":
-      return "linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)";
-    case "PROCESSING":
-      return "linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%)";
-    case "ERROR":
-      return "linear-gradient(135deg, #FF6B6B 0%, #EE5A6F 100%)";
-    case "SUCCESS":
-      return "linear-gradient(135deg, #56CCF2 0%, #2F80ED 100%)";
-    default:
-      return "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)";
-  }
-};
+const visualClass = css`
+  background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+`;
+
+const processingClass = css`
+  background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+`;
+
+const errorClass = css`
+  background: linear-gradient(135deg, #FF6B6B 0%, #EE5A6F 100%);
+`;
+
+const successClass = css`
+  background: linear-gradient(135deg, #56CCF2 0%, #2F80ED 100%);
+`;
+
+const idleClass = css`
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+`;
 
 export const Emblem = (props: { isMac: boolean }) => {
-  const [state, dispatch] = useAppState();
-  const background = createMemo(() => getBackgroundForState(state.name));
+  const [state] = useAppState();
+
+  const stateClass = createMemo(() => {
+    const stateName = state.name as string;
+    switch (stateName) {
+      case "VISUAL":
+        return visualClass;
+      case "PROCESSING":
+        return processingClass;
+      case "ERROR":
+        return errorClass;
+      case "SUCCESS":
+        return successClass;
+      default:
+        return idleClass;
+    }
+  });
 
   return (
-    <div class={emblemContainerClass(background())}>
+    <div class={`${emblemContainerClass} ${stateClass()}`}>
       {props.isMac ? "⌘ + K" : "Ctrl + K"}
     </div>
   );
