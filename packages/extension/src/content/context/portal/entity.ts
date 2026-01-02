@@ -1,13 +1,27 @@
 import { createContext } from "solid-js";
-import type { Accessor, Setter } from "solid-js";
 
-export type PortalInfo = DOMRect | null;
+export type PortalInfo = {
+  hover: DOMRect | null;
+  selected: DOMRect[];
+};
 
-export type PortalInfoContext = [Accessor<PortalInfo>, Setter<PortalInfo>];
+export type PortalActions = {
+  setHover: (rect: DOMRect | null) => void;
+  addSelected: (rect: DOMRect) => void;
+  removeSelected: (index: number) => void;
+  clearSelected: () => void;
+};
 
-export const DEFAULT_PORTAL_VALUE: PortalInfo = null;
+export type PortalInfoContext = PortalActions;
 
-export const PortalContext = createContext<PortalInfoContext>([
-  () => DEFAULT_PORTAL_VALUE,
-  (_v: PortalInfo | ((prev: PortalInfo) => PortalInfo)) => {},
-]);
+export const DEFAULT_PORTAL_VALUE: PortalInfo = {
+  hover: null,
+  selected: [],
+};
+
+export const PortalContext = createContext<PortalInfoContext>({
+  setHover: () => {},
+  addSelected: () => {},
+  removeSelected: () => {},
+  clearSelected: () => {},
+});

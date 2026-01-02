@@ -5,7 +5,7 @@ import { getClosestElementFromMouseEvent } from "../logic/capture";
 
 export function VisualMode() {
   const [state, dispatch] = useAppState();
-  const [portalInfo, setPortalInfo] = usePortal();
+  const portalActions = usePortal();
 
   function handleElementClick(event: MouseEvent) {
     console.log("handleElementClick");
@@ -22,9 +22,9 @@ export function VisualMode() {
       // Dispatch action to add element to selection
       dispatch({ type: "ELEMENT_SELECT", element: element });
 
-      // Optional: Update portal to show highlight
+      // Add portal outline for selected element
       const rect = element.getBoundingClientRect();
-      setPortalInfo(rect);
+      portalActions.addSelected(rect);
 
       // Optional: Prevent default behavior
       event.preventDefault();
