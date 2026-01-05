@@ -11,9 +11,27 @@ const svgCss = css`
   pointer-events: none;
 `;
 
+const OUTLINE_COLORS = [
+  "#FF595E", // Tomato
+  "#FF924C", // Orange
+  "#FFCA3A", // Yellow
+  "#C5CA30", // Pear
+  "#8AC926", // Lime
+  "#36949D", // Teal
+  "#1982C4", // Blue
+  "#4267AC", // Royal Blue
+  "#6A4C93", // Violet
+  "#9D4EDD", // Purple
+  "#E040FB", // Magenta
+  "#F15BB5", // Pink
+  "#00BBF9", // Cyan
+  "#00F5D4", // Aquamarine
+  "#90BE6D", // Sage Green
+];
+
 const pathCss = css`
   fill: none;
-  stroke: red;
+  stroke: var(--outline-color, #FF6B35);
   stroke-width: 2px;
   stroke-dasharray: 30 10;
   animation: dash-rotate 1s linear infinite;
@@ -71,6 +89,11 @@ function generateRectPath(rect: DOMRect, radius: number = 8): string {
 }
 
 function Outline(props: { elem: DOMElement }) {
+  const color = createMemo(() => {
+    const randomIndex = Math.floor(Math.random() * OUTLINE_COLORS.length);
+    return OUTLINE_COLORS[randomIndex];
+  });
+
   // Calculate perimeter of the actual drawn path (accounting for the ±5px offsets)
   // const width = props.rect.width + 10; // +5 on each side
   // const height = props.rect.height + 10; // +5 on each side
@@ -104,7 +127,10 @@ function Outline(props: { elem: DOMElement }) {
       <path
         d={generateRectPath(props.elem.getBoundingClientRect())}
         class={pathCss}
-        style={{ "--perimeter": `${perimeterPx}px` }}
+        style={{
+          "--perimeter": `${perimeterPx}px`,
+          "--outline-color": color(),
+        }}
       />
     </svg>
   );
