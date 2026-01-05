@@ -1,11 +1,9 @@
 import { onMount, onCleanup } from "solid-js";
 import { useAppState } from "../context/state/hooks";
-import { usePortal } from "../context/portal/hooks";
 import { getClosestElementFromMouseEvent } from "../logic/capture";
 
 export function VisualMode() {
   const [state, dispatch] = useAppState();
-  const portalActions = usePortal();
 
   function handleElementClick(event: MouseEvent) {
     console.log("handleElementClick");
@@ -21,10 +19,6 @@ export function VisualMode() {
 
       // Dispatch action to add element to selection
       dispatch({ type: "ELEMENT_SELECT", element: element });
-
-      // Add portal outline for selected element
-      const rect = element.getBoundingClientRect();
-      portalActions.addSelected(rect);
 
       // Optional: Prevent default behavior
       event.preventDefault();

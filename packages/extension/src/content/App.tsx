@@ -5,9 +5,9 @@ import { Emblem } from "./components/Emblem";
 import { UserProvider } from "./context/user/provider";
 import { ChexCore } from "./components/ChexCore";
 import { VisualMode } from "./components/VisualMode";
-import { PortalProvider } from "./context/portal/provider";
 import { StateProvider } from "./context/state/provider";
 import { useAppState } from "./context/state/hooks";
+import { Portal } from "./components/Portal";
 
 const appContainerClass = css`
   position: fixed;
@@ -27,7 +27,6 @@ const detectMacOS: () => boolean = () => {
 };
 
 function AppContent() {
-  console.log("AppContent rendered");
   const [state, dispatch] = useAppState();
   const [isMac, setIsMac] = createSignal(false);
 
@@ -45,7 +44,7 @@ function AppContent() {
       return;
     }
     event.preventDefault();
-    
+
     if (isActive()) {
       dispatch({ type: "DEACTIVATE" });
     } else {
@@ -92,9 +91,8 @@ export function App() {
   return (
     <UserProvider>
       <StateProvider>
-        <PortalProvider>
-          <AppContent />
-        </PortalProvider>
+        <Portal />
+        <AppContent />
       </StateProvider>
     </UserProvider>
   );
